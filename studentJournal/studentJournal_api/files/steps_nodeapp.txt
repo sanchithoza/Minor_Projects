@@ -1,0 +1,29 @@
+1 create and open a folder in vscode
+2 start a terminal inside vscode
+3 execute "npm init" command.
+	it will ask for few confirmations
+4 create a server.js file in root folder.
+5 import http module using "var http = require('http');" in server.js file
+6 create server using http import.
+
+adding mongo db support
+
+1 install mongodb using "npm install mongodb --save"
+2 install mongoose using "npm install mongoose --save"
+
+3 import mongo db and mongoose on server.js
+	const mongo = require('mongodb');
+	const mongoose = require('mongoose');
+4 connect to mongodb database using mongoose
+	mongoose.connect('mongodb://localhost:27017/databasename');
+
+5 create model for your collections
+	eg
+		const User = mongoose.model('user', { name: String,email: String, phone:String,password:String });
+
+6. For inserting a document use model instance
+	eg
+		 const user = new User(body);
+            user.save().then(() => console.log('inserted'));
+
+here body is a json object
