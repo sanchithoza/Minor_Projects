@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 const port = 7000;
 
-mongoose.connect("mongodb://localhost:27017/productdb");
+mongoose.connect("mongodb://127.0.0.1:27017/productdb");
 const User = mongoose.model("user", {
   name: String,
   email: String,
