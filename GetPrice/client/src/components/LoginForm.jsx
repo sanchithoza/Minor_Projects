@@ -1,8 +1,10 @@
 // src/components/LoginForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -12,12 +14,15 @@ const LoginForm = () => {
       const response = await axios.post('/api/users/login', { username, password });
       const token = response.data.token;
       console.log('Login successful',token);
-      // Save token to local storage or state for future API requests
+      // Store the token in local storage
+      localStorage.setItem('jwtToken', token);
+      alert("Login Success.");
+      navigate('/listproducts');
     } catch (error) {
       console.error('Login failed:', error.message);
     }
   };
-
+  
   return (
     <div>
       <h2>Login</h2>
