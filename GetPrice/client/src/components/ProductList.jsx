@@ -39,9 +39,10 @@ const ProductList = () => {
   };
 
   return (
-    <div>
+    <div className='container'>
+      <div className='row card m-2 p-2'>
       <h2>Product List</h2>
-      <table>
+      <table class="table table-striped border">
         <thead>
           <tr>
             <th>Product Name</th>
@@ -72,6 +73,7 @@ const ProductList = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

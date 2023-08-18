@@ -20,6 +20,7 @@ const LoginForm = () => {
       navigate('/listproducts');
     } catch (error) {
       console.error('Login failed:', error.message);
+      alert("Login Failed.");
     }
   };
   

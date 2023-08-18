@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Logout from './Logout';
 
 const NavMenu = () => {
-  const token = localStorage.getItem("jwtToken");
   return (
     <nav className="navbar navbar-expand-sm bg-dark">
        <div className="container-fluid">
@@ -19,7 +18,7 @@ const NavMenu = () => {
           <Link className="nav-link" to="/listproducts">List Product</Link>
         </li>
        <li className="nav-item">
-       <Logout/>
+            <Logout/>
          </li>
       </ul>
       </div>
