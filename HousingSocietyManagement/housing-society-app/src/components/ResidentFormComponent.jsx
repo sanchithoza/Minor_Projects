@@ -41,9 +41,11 @@ function ResidentFormComponent({ residentId }) {
       axios.post('/api/residents', newResident)
         .then(response => {
           console.log('Resident added:', response.data);
+          alert(response.data);
         })
         .catch(error => {
           console.error('Error adding resident:', error);
+          alert(error);
         });
     }
   };

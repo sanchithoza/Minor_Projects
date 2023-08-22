@@ -3,7 +3,8 @@ const router = express.Router();
 const Resident = require('../models/resident');
 
 // Create a new resident
-router.post('/residents', async (req, res) => {
+router.get('/', (req, res) => res.send('Hello World!'))
+router.post('/', async (req, res) => {
   try {
     const resident = new Resident(req.body);
     const savedResident = await resident.save();
@@ -14,7 +15,7 @@ router.post('/residents', async (req, res) => {
 });
 
 // Get all residents
-router.get('/residents', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const residents = await Resident.find();
     res.json(residents);
@@ -24,7 +25,7 @@ router.get('/residents', async (req, res) => {
 });
 
 // Get a specific resident by ID
-router.get('/residents/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const resident = await Resident.findById(req.params.id);
     if (resident) {
@@ -38,7 +39,7 @@ router.get('/residents/:id', async (req, res) => {
 });
 
 // Update a resident
-router.put('/residents/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const updatedResident = await Resident.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (updatedResident) {
@@ -52,7 +53,7 @@ router.put('/residents/:id', async (req, res) => {
 });
 
 // Delete a resident
-router.delete('/residents/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const deletedResident = await Resident.findByIdAndDelete(req.params.id);
     if (deletedResident) {

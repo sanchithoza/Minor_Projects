@@ -9,7 +9,7 @@ const createRoutes = (app) => {
   app.use('/api/societies', societyRoutes);
   app.use('/api/residents', residentRoutes);
   app.use('/api/payments', paymentRoutes);
-  app.use('/api/users', authMiddleware, userRoutes); // Apply auth middleware to protect user routes
+  // app.use('/api/users', authMiddleware, userRoutes); // Apply auth middleware to protect user routes
 };
 
 module.exports = createRoutes;

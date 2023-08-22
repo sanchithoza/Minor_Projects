@@ -1,9 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
+const config = require('./config/config');
 const createRoutes = require('./routes');
+const residentRoutes = require('./routes/residentRoutes');
 const cors = require('cors'); // Import the cors package
-
+const PORT = process.env.PORT || config.PORT;
 const app = express();
 
 // Middleware
@@ -14,10 +17,10 @@ app.use(bodyParser.json());
 connectDB();
 
 // Create routes
-createRoutes(app);
-
+//createRoutes(app);
+app.use('/api/residents', residentRoutes);
+app.get('/', (req, res) => res.send('Hello World!'))
 // Start the server
-const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
