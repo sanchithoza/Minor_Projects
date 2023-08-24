@@ -3,14 +3,16 @@ const router = express.Router();
 const Resident = require('../models/resident');
 
 // Create a new resident
-router.get('/', (req, res) => res.send('Hello World!'))
 router.post('/', async (req, res) => {
   try {
     const resident = new Resident(req.body);
+    console.log(resident);
     const savedResident = await resident.save();
+    
     res.status(201).json(savedResident);
   } catch (error) {
     res.status(400).json({ message: error.message });
+    console.log(error);
   }
 });
 

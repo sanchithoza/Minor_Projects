@@ -3,7 +3,7 @@ const router = express.Router();
 const Society = require('../models/society');
 
 // Create a new society
-router.post('/societies', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const society = new Society(req.body);
     const savedSociety = await society.save();
@@ -14,7 +14,7 @@ router.post('/societies', async (req, res) => {
 });
 
 // Get all societies
-router.get('/societies', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const societies = await Society.find();
     res.json(societies);
@@ -24,7 +24,7 @@ router.get('/societies', async (req, res) => {
 });
 
 // Get a specific society by ID
-router.get('/societies/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const society = await Society.findById(req.params.id);
     if (society) {
@@ -38,7 +38,7 @@ router.get('/societies/:id', async (req, res) => {
 });
 
 // Update a society
-router.put('/societies/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const updatedSociety = await Society.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (updatedSociety) {
@@ -52,7 +52,7 @@ router.put('/societies/:id', async (req, res) => {
 });
 
 // Delete a society
-router.delete('/societies/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const deletedSociety = await Society.findByIdAndDelete(req.params.id);
     if (deletedSociety) {

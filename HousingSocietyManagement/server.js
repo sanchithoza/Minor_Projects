@@ -17,8 +17,7 @@ app.use(bodyParser.json());
 connectDB();
 
 // Create routes
-//createRoutes(app);
-app.use('/api/residents', residentRoutes);
+createRoutes(app);
 app.get('/', (req, res) => res.send('Hello World!'))
 // Start the server
 app.listen(PORT, () => {
