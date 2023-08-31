@@ -1,7 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const residentSchema = new mongoose.Schema({
-  societyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Society', required: true },
+  societyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Society",
+    required: true,
+  },
   name: { type: String, required: true },
   unitNumber: { type: String, required: true },
   contactNumber: { type: String },
@@ -10,6 +14,6 @@ const residentSchema = new mongoose.Schema({
   isOwner: { type: Boolean, required: true },
 });
 
-const Resident = mongoose.model('Resident', residentSchema);
+const Resident = mongoose.model("Resident", residentSchema);
 
 module.exports = Resident;

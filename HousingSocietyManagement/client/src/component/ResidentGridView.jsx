@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import axios from "axios";
-// import ConfirmationDialog from "./ConfirmationDialog";
 
 function ResidentGridView() {
-//   const [showConfirmation, setShowConfirmation] = useState(false);
-//   const [selectedId, setSelectedId] = useState(null);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredResidents] = useState([]);
 
@@ -18,20 +15,20 @@ function ResidentGridView() {
       const response = await axios.get("/api/residents");
       setData(response.data);
       setFilteredResidents(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching:", error);
     }
   };
-//   const handleDelete = (id) => {
-//     setSelectedId(id);
-//     setShowConfirmation(true);
-//   };
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/societies/${id}`);
-    //   setShowConfirmation(false);
-    //   setSelectedId(null);
-      fetchData(); // Refresh the list after deletion
+      const shouldDelete = window.confirm(
+        "Are you sure you want to delete this record ?"
+      );
+      if (shouldDelete) {
+        await axios.delete(`/api/residents/${id}`);
+        fetchData(); // Refresh the list after deletion
+      }
     } catch (error) {
       console.error("Error deleting:", error);
     }
@@ -48,38 +45,38 @@ function ResidentGridView() {
 
   const columns = [
     {
-      name: "Society ID",
-      selector: "societyId",
+      name: "Society",
+      selector: (row) => row.societyId.name,
       sortable: true,
     },
     {
       name: "Name",
-      selector: "name",
+      selector: (row) => row.name,
       sortable: true,
     },
     {
       name: "Unit Number",
-      selector: "unitNumber",
+      selector: (row) => row.unitNumber,
       sortable: true,
     },
     {
       name: "Contact Number",
-      selector: "contactNumber",
+      selector: (row) => row.contactNumber,
       sortable: true,
     },
     {
       name: "Email",
-      selector: "email",
+      selector: (row) => row.email,
       sortable: true,
     },
     {
       name: "Move In Date",
-      selector: "moveInDate",
+      selector: (row) => row.moveInDate,
       sortable: true,
     },
     {
       name: "Is Owner",
-      selector: "isOwner",
+      selector: (row) => row.isOwner,
       sortable: true,
       cell: (row) => (row.isOwner ? "Yes" : "No"),
     },
@@ -114,17 +111,14 @@ function ResidentGridView() {
         highlightOnHover
         striped
         subHeaderComponent={
-          <input type="text" onChange={handleFilterChange} placeholder="Search" className="form-control"/>
+          <input
+            type="text"
+            onChange={handleFilterChange}
+            placeholder="Search"
+            className="form-control"
+          />
         }
       />
-      {/* {showConfirmation && (
-        <ConfirmationDialog
-          title="Confirm Delete"
-          message="Are you sure you want to delete this resident?"
-          onConfirm={confirmDelete}
-          onCancel={() => setShowConfirmation(false)}
-        />
-      )} */}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const societySchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -7,6 +7,6 @@ const societySchema = new mongoose.Schema({
   amenities: [{ type: String }],
 });
 
-const Society = mongoose.model('Society', societySchema);
+const Society = mongoose.model("Society", societySchema);
 
 module.exports = Society;

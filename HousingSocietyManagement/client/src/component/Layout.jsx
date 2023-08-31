@@ -27,7 +27,7 @@ export default function Layout() {
                 <Link to="/view-resident" className="nav-link">View Resident</Link>
               </li>
               <li className="nav-item">
-                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                <Link to="/add-maintenance" className="nav-link">Add Maintenance</Link>
               </li>
               <li className="nav-item">
                 <Link to="/nothing-here" className="nav-link">Nothing Here</Link>

@@ -60,22 +60,35 @@ function ResidentFormComponent() {
         // Update existing resident
         const response = await axios.put(`/api/residents/${id}`, residentData);
         console.log("Resident updated:", response.data);
+        alert("Resident updated.");
       } else {
         // Add new resident
         const response = await axios.post("/api/residents", residentData);
         console.log("Resident added:", response.data);
+        alert("Resident added.");
       }
+      handleReset();
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+  const handleReset = () => {
+    setSocietyId("");
+    setName("");
+    setUnitNumber("");
+    setContactNumber("");
+    setEmail("");
+    setMoveInDate("");
+    setIsOwner("");
   };
 
   return (
     <div className="container">
       <h2>{id ? "Update Resident" : "Add New Resident"}</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
+        <div className="row">
         {/* Society ID (if applicable, otherwise remove this field) */}
-        <div className="mb-3">
+        <div className="col-6">
           <label htmlFor="societyId" className="form-label">
             Select Society:
           </label>
@@ -97,7 +110,7 @@ function ResidentFormComponent() {
           </select>
         </div>
 
-        <div className="mb-3">
+        <div className="col-6">
           <label htmlFor="name" className="form-label">
             Name:
           </label>
@@ -111,7 +124,7 @@ function ResidentFormComponent() {
           />
         </div>
 
-        <div className="mb-3">
+        <div className="col-6">
           <label htmlFor="unitNumber" className="form-label">
             Unit Number:
           </label>
@@ -125,7 +138,7 @@ function ResidentFormComponent() {
           />
         </div>
 
-        <div className="mb-3">
+        <div className="col-6">
           <label htmlFor="contactNumber" className="form-label">
             Contact Number:
           </label>
@@ -138,7 +151,7 @@ function ResidentFormComponent() {
           />
         </div>
 
-        <div className="mb-3">
+        <div className="col-6">
           <label htmlFor="email" className="form-label">
             Email:
           </label>
@@ -151,7 +164,7 @@ function ResidentFormComponent() {
           />
         </div>
 
-        <div className="mb-3">
+        <div className="col-6">
           <label htmlFor="moveInDate" className="form-label">
             Move-In Date:
           </label>
@@ -165,7 +178,7 @@ function ResidentFormComponent() {
           />
         </div>
 
-        <div className="form-check mb-3">
+        <div className="form-check p-4 col-6">
           <input
             type="checkbox"
             className="form-check-input"
@@ -177,10 +190,16 @@ function ResidentFormComponent() {
             Is Owner
           </label>
         </div>
-
-        <button type="submit" className="btn btn-primary">
-          {id ? "Update" : "Add"} Resident
-        </button>
+        <div className="col-6"></div>
+        <div className="btn-group col-6">
+          <button type="submit" className="btn btn-primary">
+            {id ? "Update" : "Add"} Resident
+          </button>
+          <button type="reset" className="btn btn-warning">
+            Reset
+          </button>
+        </div>
+        </div>
       </form>
     </div>
   );

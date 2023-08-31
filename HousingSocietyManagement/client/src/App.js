@@ -8,6 +8,7 @@ import Dashboard from './component/Dashboard';
 import AddUpdateSocietyForm from './component/AddUpdateSocietyForm';
 import SocietyGridView from './component/SocietyGridView';
 import ResidentGridView from './component/ResidentGridView';
+import MaintenanceTransactionForm from './component/MaintenanceTransactionForm';
 export default function App() {
   return (
     <div>
@@ -25,7 +26,7 @@ export default function App() {
           <Route path="edit-society/:id" element={<AddUpdateSocietyForm />} />
           <Route path="view-society" element={<SocietyGridView />} />
           <Route path="edit-resident/:id" element={<AddUpdateResidentForm />} />
-
+          <Route path="add-maintenance" element={<MaintenanceTransactionForm />} />
           {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}
