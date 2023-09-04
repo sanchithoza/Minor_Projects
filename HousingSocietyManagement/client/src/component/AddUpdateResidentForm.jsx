@@ -19,7 +19,7 @@ function ResidentFormComponent() {
            setSocietyId(localStorage.userSocietyId)
       }
     axios
-      .get("/api/societies")
+      .get((localStorage.userSocietyId ? `/api/societies/${localStorage.userSocietyId}` : "/api/societies"))
       .then((response) => {
         const fetchedSocieties = response.data;
         setSocieties(fetchedSocieties);

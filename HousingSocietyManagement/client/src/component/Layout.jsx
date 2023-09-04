@@ -2,8 +2,7 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 export default function Layout() {
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userDetails");
+   localStorage.clear();
     navigate("/");
   };
   return (

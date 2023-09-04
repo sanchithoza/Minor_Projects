@@ -5,6 +5,7 @@ import axios from 'axios';
 
 function LoginForm() {
   const navigate = useNavigate();
+  const [isLogedin,setIsLogedin] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -40,7 +41,11 @@ function LoginForm() {
       if(decodedToken.societyId){
         localStorage.setItem('userResidentId', decodedToken.residentId);
       }
-      navigate("/");
+      setIsLogedin(true)
+      if(isLogedin){
+        navigate("/");
+      }
+      
       // const userData = localStorage.getItem('userDetails');
       // console.log(JSON.parse(userData));
       // Redirect or perform other actions upon successful login

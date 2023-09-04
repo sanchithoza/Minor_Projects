@@ -52,7 +52,7 @@ router.get("/:id", async (req, res) => {
   try {
     const society = await Society.findById(req.params.id);
     if (society) {
-      res.json(society);
+      res.json([society]);
     } else {
       res.status(404).json({ message: "Society not found" });
     }
