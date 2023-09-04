@@ -13,7 +13,11 @@ function ResidentFormComponent() {
   const [isOwner, setIsOwner] = useState(false);
   const [societies, setSocieties] = useState([]);
 
+  
   useEffect(() => {
+    if(localStorage.userSocietyId){
+           setSocietyId(localStorage.userSocietyId)
+      }
     axios
       .get("/api/societies")
       .then((response) => {

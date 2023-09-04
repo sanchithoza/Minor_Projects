@@ -125,7 +125,7 @@ function MaintenanceTransactionForm() {
 
           <div className="col-6">
             <label htmlFor="residentId" className="form-label">
-              Select Society:
+              Select Resident:
             </label>
             <select
               className="form-select"

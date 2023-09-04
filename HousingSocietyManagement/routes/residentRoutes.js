@@ -1,15 +1,36 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
+const {ObjectId} = require("mongodb");
 const router = express.Router();
 const Resident = require("../models/resident");
 const Society = require("../models/society");
+const User = require("../models/user");
+
 
 // Create a new resident
 router.post("/", async (req, res) => {
   try {
+    const existingUser = await User.findOne({ "username":req.body.contactNumber });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username with similar contact number already exits' });
+    }
     const resident = new Resident(req.body);
     console.log(resident);
     const savedResident = await resident.save();
-
+    if (savedResident) {
+      // Hash the password before saving it
+      const hashedPassword = await bcrypt.hash(req.body.contactNumber, 10);
+      const ljUser = {
+        residentId: savedResident._id,
+        username: req.body.contactNumber,
+        societyId: new ObjectId(req.body.societyId), 
+        password: hashedPassword,
+        role: "resident",
+      };
+      const user = new User(ljUser);
+      console.log(ljUser);
+      const savedUser = await user.save();
+    }
     res.status(201).json(savedResident);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -20,7 +41,10 @@ router.post("/", async (req, res) => {
 // Get all residents
 router.get("/", async (req, res) => {
   try {
-    let residents = await Resident.find().populate({ path: 'societyId', select: 'name' });
+    let residents = await Resident.find().populate({
+      path: "societyId",
+      select: "name",
+    });
     console.log(residents);
     res.json(residents);
   } catch (error) {
