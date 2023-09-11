@@ -57,7 +57,7 @@ function MaintenanceTransactionForm() {
   }, [id]);
   const handleInputChange = (event) => {
     const { id, value } = event.target;
-    console.log(id,value);
+    console.log(id, value);
     setFormData((prevData) => ({
       ...prevData,
       [id]: value,
@@ -81,12 +81,15 @@ function MaintenanceTransactionForm() {
       if (id) {
         // Update existing society
         const response = await axios.put(`/api/maintenance/${id}`, formData);
+        alert("Maintenance record updated.");
         console.log("Maintenance updated:", response.data);
       } else {
         // Add new society
         const response = await axios.post("/api/maintenance", formData);
+        alert("Maintenance record added.");
         console.log("Maintenance added:", response.data);
       }
+
       handleReset();
     } catch (error) {
       console.error("Error:", error);
@@ -215,9 +218,13 @@ function MaintenanceTransactionForm() {
               onChange={handleInputChange}
               required
             >
-            <option key={"paid"} value={"paid"}>Paid</option>
-            <option key={"overdue"} value={"overdue"}>Over Due</option>
-        </select>
+              <option key={"paid"} value={"paid"}>
+                Paid
+              </option>
+              <option key={"overdue"} value={"overdue"}>
+                Over Due
+              </option>
+            </select>
           </div>
           <div className="btn-group col-6 mt-3">
             <button type="submit" className="btn btn-primary">

@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import axios from 'axios';
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const [isLogedin,setIsLogedin] = useState(false);
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
+  const { isLoggedIn,login } = useAuth();
+   const [formData, setFormData] = useState({
+    username: "",
+    password: "",
   });
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -25,34 +26,35 @@ function LoginForm() {
     event.preventDefault();
 
     try {
-      const response = await axios.post('/api/users/login', formData);
+      const response = await axios.post("/api/users/login", formData);
 
       // Assuming your backend sends a JWT token upon successful login
       const { token } = response.data;
 
       // Store the JWT token in local storage or a secure cookie
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
       const decodedToken = jwt_decode(token);
-      localStorage.setItem('userRole', decodedToken.role);
-      localStorage.setItem('userId', decodedToken._id)
-      if(decodedToken.societyId){
-        localStorage.setItem('userSocietyId', decodedToken.societyId);
+      console.log(decodedToken);
+      localStorage.setItem("userRole", decodedToken.role);
+      localStorage.setItem("userId", decodedToken.userId);
+      if (decodedToken.societyId) {
+        localStorage.setItem("userSocietyId", decodedToken.societyId);
       }
-      if(decodedToken.societyId){
-        localStorage.setItem('userResidentId', decodedToken.residentId);
+      if (decodedToken.societyId) {
+        localStorage.setItem("userResidentId", decodedToken.residentId);
       }
-      setIsLogedin(true)
-      if(isLogedin){
+      login();
+      if (isLoggedIn) {
         navigate("/");
       }
-      
+
       // const userData = localStorage.getItem('userDetails');
       // console.log(JSON.parse(userData));
       // Redirect or perform other actions upon successful login
       // You can use React Router to navigate to different pages
       // history.push('/dashboard');
     } catch (error) {
-      setError('Invalid username or password');
+      setError("Invalid username or password");
     }
   };
 
@@ -62,10 +64,14 @@ function LoginForm() {
         <div className="col-md-6">
           <div className="card mt-5">
             <div className="card-body">
-              <h2 className="card-title text-center">Login</h2>
+              <h5 className="card-title text-center">Housing Society Management Application</h5>
+              <hr/>
+              <h2 className="text-center">Login</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="username" className="form-label">Username</label>
+                  <label htmlFor="username" className="form-label">
+                    Username
+                  </label>
                   <input
                     type="text"
                     name="username"
@@ -77,7 +83,9 @@ function LoginForm() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
+                  <label htmlFor="password" className="form-label">
+                    Password
+                  </label>
                   <input
                     type="password"
                     name="password"
@@ -90,7 +98,9 @@ function LoginForm() {
                 </div>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <div className="d-grid">
-                  <button type="submit" className="btn btn-primary">Login</button>
+                  <button type="submit" className="btn btn-primary">
+                    Login
+                  </button>
                 </div>
               </form>
             </div>

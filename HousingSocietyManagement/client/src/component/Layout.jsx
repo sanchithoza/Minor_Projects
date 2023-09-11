@@ -1,8 +1,11 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 export default function Layout() {
+  const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
   const handleLogout = () => {
-   localStorage.clear();
+    localStorage.clear();
+    logout();
     navigate("/");
   };
   return (
@@ -24,12 +27,18 @@ export default function Layout() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link to="/" className="nav-link">
-                  Home
-                </Link>
-              </li>
-              {localStorage.userRole ? (
+              {isLoggedIn ? (
+                <>
+                  <li className="nav-item">
+                    <Link to="/" className="nav-link">
+                      Home
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                ""
+              )}
+              {isLoggedIn ? (
                 localStorage.userRole === "admin" ? (
                   <>
                     <li className="nav-item">
@@ -49,8 +58,9 @@ export default function Layout() {
               ) : (
                 ""
               )}
-              {localStorage.userRole ? (
-                (localStorage.userRole === "society") ? (
+              {isLoggedIn ? (
+                localStorage.userRole === "society" ||
+                localStorage.userRole === "admin" ? (
                   <>
                     <li className="nav-item">
                       <Link to="/add-resident" className="nav-link">
@@ -69,17 +79,23 @@ export default function Layout() {
               ) : (
                 ""
               )}
-              <li className="nav-item">
-                <Link to="/add-maintenance" className="nav-link">
-                  Add Maintenance
-                </Link>
-              </li>
-              <li className="nav-item">
+              {isLoggedIn ? (
+                <>
+                  <li className="nav-item">
+                    <Link to="/add-maintenance" className="nav-link">
+                      Add Maintenance
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                ""
+              )}
+              {/* <li className="nav-item">
                 <Link to="/nothing-here" className="nav-link">
                   Nothing Here
                 </Link>
-              </li>
-              {localStorage.userRole ? (
+              </li> */}
+              {isLoggedIn ? (
                 <li className="nav-item">
                   <Link onClick={handleLogout} className="nav-link">
                     Logout

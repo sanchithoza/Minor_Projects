@@ -1,18 +1,23 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const {ObjectId} = require("mongodb");
+const { ObjectId } = require("mongodb");
 const router = express.Router();
 const Resident = require("../models/resident");
 const Society = require("../models/society");
 const User = require("../models/user");
 
-
 // Create a new resident
 router.post("/", async (req, res) => {
   try {
-    const existingUser = await User.findOne({ "username":req.body.contactNumber });
+    const existingUser = await User.findOne({
+      username: req.body.contactNumber,
+    });
     if (existingUser) {
-      return res.status(400).json({ message: 'Username with similar contact number already exits' });
+      return res
+        .status(400)
+        .json({
+          message: "Username with similar contact number already exits",
+        });
     }
     const resident = new Resident(req.body);
     console.log(resident);
@@ -23,7 +28,7 @@ router.post("/", async (req, res) => {
       const ljUser = {
         residentId: savedResident._id,
         username: req.body.contactNumber,
-        societyId: new ObjectId(req.body.societyId), 
+        societyId: new ObjectId(req.body.societyId),
         password: hashedPassword,
         role: "resident",
       };
@@ -88,8 +93,13 @@ router.put("/:id", async (req, res) => {
 // Delete a resident
 router.delete("/:id", async (req, res) => {
   try {
+
     const deletedResident = await Resident.findByIdAndDelete(req.params.id);
     if (deletedResident) {
+     const deleteUser = await User.deleteOne({"residentId":deletedResident._id});
+      if(!deleteUser){
+        console.log("Unable to Delete from user table");
+      }
       res.json({ message: "Resident deleted" });
     } else {
       res.status(404).json({ message: "Resident not found" });
