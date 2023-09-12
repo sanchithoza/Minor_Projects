@@ -39,8 +39,13 @@ router.post("/register", async (req, res) => {
 // Login
 router.post("/login", async (req, res) => {
   try {
+    
+    const adminUser = await User.findOne({ "username":"admin" });
+    if(!adminUser){
+      await createAdmin();
+    }
+   
     const { username, password } = req.body;
-
     // Find the user by username
     const user = await User.findOne({ username });
     if (!user) {
@@ -168,3 +173,27 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+const createAdmin=async ()=>{
+  try {
+    let username = "admin";
+    let password = "admin";
+    let role = "admin";
+    let email = "admin@admin.com"
+    // Hash the password before saving it
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      username,
+      email,
+      password: hashedPassword,
+      role: role || "user", // Default role is 'user'
+    });
+    const savedUser = await user.save();
+    console.log(savedUser);
+    return savedUser;
+  } catch (error) {
+    console.log(error);
+    return;  
+  }
+}

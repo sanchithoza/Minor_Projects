@@ -35,15 +35,42 @@ function MaintenanceTransactionForm() {
     return currentYear;
   }
   useEffect(() => {
-    axios
-      .get("/api/societies")
-      .then((response) => {
-        const fetchedSocieties = response.data;
-        setSocieties(fetchedSocieties);
-      })
-      .catch((error) => {
-        console.error("Error fetching societies:", error);
-      });
+    if (localStorage.userSocietyId) {
+      initialFormData.societyId = localStorage.userSocietyId;
+      axios
+        .get(
+          localStorage.userSocietyId
+            ? `/api/societies/${localStorage.userSocietyId}`
+            : "/api/societies"
+        )
+        .then((response) => {
+          const fetchedSocieties = response.data;
+          setSocieties(fetchedSocieties);
+        })
+        .catch((error) => {
+          console.error("Error fetching societies:", error);
+        });
+        axios
+        .get(`/api/residents/society/${localStorage.userSocietyId}`)
+        .then((response) => {
+          const fetchedResidents = response.data;
+          setResidents(fetchedResidents);
+        })
+        .catch((error) => {
+          console.error("Error fetching residents:", error);
+        });
+    } else {
+      axios
+        .get("/api/societies")
+        .then((response) => {
+          const fetchedSocieties = response.data;
+          setSocieties(fetchedSocieties);
+        })
+        .catch((error) => {
+          console.error("Error fetching societies:", error);
+        });
+    }
+
     if (id) {
       axios
         .get(`/api/maintenance/${id}`)

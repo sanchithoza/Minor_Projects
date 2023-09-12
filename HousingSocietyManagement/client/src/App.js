@@ -10,6 +10,7 @@ import SocietyGridView from "./component/SocietyGridView";
 import ResidentGridView from "./component/ResidentGridView";
 import MaintenanceTransactionForm from "./component/MaintenanceTransactionForm";
 import { AuthProvider } from "./context/AuthContext";
+import ResidentMaintenanceReport from "./component/ResidentMaintenanceReport";
 export default function App() {
   return (
     <AuthProvider>
@@ -69,6 +70,11 @@ export default function App() {
                 path="add-maintenance"
                 element={<MaintenanceTransactionForm />}
               />
+              <Route
+                path="resident-maintenance-report/:id"
+                element={<ResidentMaintenanceReport />}
+              />
+             
               {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}

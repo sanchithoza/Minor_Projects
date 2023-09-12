@@ -17,16 +17,17 @@ function ResidentFormComponent() {
   useEffect(() => {
     if(localStorage.userSocietyId){
            setSocietyId(localStorage.userSocietyId)
+           axios
+           .get((localStorage.userSocietyId ? `/api/societies/${localStorage.userSocietyId}` : "/api/societies"))
+           .then((response) => {
+             const fetchedSocieties = response.data;
+             setSocieties(fetchedSocieties);
+           })
+           .catch((error) => {
+             console.error("Error fetching societies:", error);
+           });
       }
-    axios
-      .get((localStorage.userSocietyId ? `/api/societies/${localStorage.userSocietyId}` : "/api/societies"))
-      .then((response) => {
-        const fetchedSocieties = response.data;
-        setSocieties(fetchedSocieties);
-      })
-      .catch((error) => {
-        console.error("Error fetching societies:", error);
-      });
+   
     if (id) {
       axios
         .get(`/api/residents/${id}`)

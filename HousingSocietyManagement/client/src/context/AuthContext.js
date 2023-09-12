@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
 
   const login = () => {
     // Perform login logic
@@ -13,6 +14,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     // Perform logout logic
+    localStorage.clear();
     setIsLoggedIn(false);
   };
 

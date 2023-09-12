@@ -1,11 +1,13 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 export default function Layout() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, login } = useAuth();
+  if (localStorage.getItem("userId")) {
+    login();
+  }
   const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.clear();
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate("/");
   };
   return (
@@ -27,6 +29,7 @@ export default function Layout() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
+              {console.log(isLoggedIn)}
               {isLoggedIn ? (
                 <>
                   <li className="nav-item">
@@ -90,12 +93,13 @@ export default function Layout() {
               ) : (
                 ""
               )}
+
               {/* <li className="nav-item">
                 <Link to="/nothing-here" className="nav-link">
                   Nothing Here
                 </Link>
               </li> */}
-              {isLoggedIn ? (
+              {/* {isLoggedIn ? (
                 <li className="nav-item">
                   <Link onClick={handleLogout} className="nav-link">
                     Logout
@@ -103,9 +107,23 @@ export default function Layout() {
                 </li>
               ) : (
                 ""
-              )}
+              )} */}
             </ul>
           </div>
+          {isLoggedIn ? (
+            <form class="d-flex">
+              <span>{localStorage.getItem("userRole")}</span>
+              <button
+                class="btn btn-outline-danger"
+                type="button"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </form>
+          ) : (
+            ""
+          )}
         </div>
       </nav>
 

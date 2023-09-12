@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 function ResidentGridView() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredResidents] = useState([]);
 
@@ -33,6 +35,9 @@ function ResidentGridView() {
       console.error("Error deleting:", error);
     }
   };
+  const showReport = async (id)=>{
+    navigate(`/resident-maintenance-report/${id}`);
+  }
   const handleFilterChange = (event) => {
     const searchValue = event.target.value.toLowerCase();
     const filteredData = data.filter((row) =>
@@ -83,6 +88,13 @@ function ResidentGridView() {
     {
       name: "Actions",
       cell: (row) => (
+        <>
+        <button
+        className="btn btn-success btn-sm"
+        onClick={() => showReport(row._id)}
+      >
+        View Report
+      </button>
         <div className="btn-group">
           <Link
             to={`/edit-resident/${row._id}`}
@@ -97,6 +109,7 @@ function ResidentGridView() {
             Delete
           </button>
         </div>
+        </>
       ),
     },
   ];
