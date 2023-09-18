@@ -13,21 +13,24 @@ function ResidentFormComponent() {
   const [isOwner, setIsOwner] = useState(false);
   const [societies, setSocieties] = useState([]);
 
-  
   useEffect(() => {
-    if(localStorage.userSocietyId){
-           setSocietyId(localStorage.userSocietyId)
-           axios
-           .get((localStorage.userSocietyId ? `/api/societies/${localStorage.userSocietyId}` : "/api/societies"))
-           .then((response) => {
-             const fetchedSocieties = response.data;
-             setSocieties(fetchedSocieties);
-           })
-           .catch((error) => {
-             console.error("Error fetching societies:", error);
-           });
-      }
-   
+    let endPoint = "";
+    if (localStorage.userSocietyId) {
+      setSocietyId(localStorage.userSocietyId);
+      endPoint = `/api/societies/${localStorage.userSocietyId}`;
+    } else {
+      endPoint = `/api/societies`;
+    }
+    axios
+      .get(endPoint)
+      .then((response) => {
+        const fetchedSocieties = response.data;
+        setSocieties(fetchedSocieties);
+      })
+      .catch((error) => {
+        console.error("Error fetching societies:", error);
+      });
+
     if (id) {
       axios
         .get(`/api/residents/${id}`)
@@ -92,118 +95,118 @@ function ResidentFormComponent() {
       <h2>{id ? "Update Resident" : "Add New Resident"}</h2>
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <div className="row">
-        {/* Society ID (if applicable, otherwise remove this field) */}
-        <div className="col-6">
-          <label htmlFor="societyId" className="form-label">
-            Select Society:
-          </label>
-          <select
-            className="form-select"
-            id="societyId"
-            value={societyId}
-            onChange={(e) => setSocietyId(e.target.value)}
-            required
-          >
-            <option value="" disabled>
-              Select a society
-            </option>
-            {societies.map((society) => (
-              <option key={society._id} value={society._id}>
-                {society.name}
+          {/* Society ID (if applicable, otherwise remove this field) */}
+          <div className="col-6">
+            <label htmlFor="societyId" className="form-label">
+              Select Society:
+            </label>
+            <select
+              className="form-select"
+              id="societyId"
+              value={societyId}
+              onChange={(e) => setSocietyId(e.target.value)}
+              required
+            >
+              <option value="" disabled>
+                Select a society
               </option>
-            ))}
-          </select>
-        </div>
+              {societies.map((society) => (
+                <option key={society._id} value={society._id}>
+                  {society.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="col-6">
-          <label htmlFor="name" className="form-label">
-            Name:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
+          <div className="col-6">
+            <label htmlFor="name" className="form-label">
+              Name:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
 
-        <div className="col-6">
-          <label htmlFor="unitNumber" className="form-label">
-            Unit Number:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="unitNumber"
-            value={unitNumber}
-            onChange={(e) => setUnitNumber(e.target.value)}
-            required
-          />
-        </div>
+          <div className="col-6">
+            <label htmlFor="unitNumber" className="form-label">
+              Unit Number:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="unitNumber"
+              value={unitNumber}
+              onChange={(e) => setUnitNumber(e.target.value)}
+              required
+            />
+          </div>
 
-        <div className="col-6">
-          <label htmlFor="contactNumber" className="form-label">
-            Contact Number:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="contactNumber"
-            value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
-          />
-        </div>
+          <div className="col-6">
+            <label htmlFor="contactNumber" className="form-label">
+              Contact Number:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="contactNumber"
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
+            />
+          </div>
 
-        <div className="col-6">
-          <label htmlFor="email" className="form-label">
-            Email:
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+          <div className="col-6">
+            <label htmlFor="email" className="form-label">
+              Email:
+            </label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-        <div className="col-6">
-          <label htmlFor="moveInDate" className="form-label">
-            Move-In Date:
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            id="moveInDate"
-            value={moveInDate}
-            onChange={(e) => setMoveInDate(e.target.value)}
-            required
-          />
-        </div>
+          <div className="col-6">
+            <label htmlFor="moveInDate" className="form-label">
+              Move-In Date:
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="moveInDate"
+              value={moveInDate}
+              onChange={(e) => setMoveInDate(e.target.value)}
+              required
+            />
+          </div>
 
-        <div className="form-check p-4 col-6">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="isOwner"
-            checked={isOwner}
-            onChange={(e) => setIsOwner(e.target.checked)}
-          />
-          <label className="form-check-label" htmlFor="isOwner">
-            Is Owner
-          </label>
-        </div>
-        <div className="col-6"></div>
-        <div className="btn-group col-6">
-          <button type="submit" className="btn btn-primary">
-            {id ? "Update" : "Add"} Resident
-          </button>
-          <button type="reset" className="btn btn-warning">
-            Reset
-          </button>
-        </div>
+          <div className="form-check p-4 col-6">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="isOwner"
+              checked={isOwner}
+              onChange={(e) => setIsOwner(e.target.checked)}
+            />
+            <label className="form-check-label" htmlFor="isOwner">
+              Is Owner
+            </label>
+          </div>
+          <div className="col-6"></div>
+          <div className="btn-group col-6">
+            <button type="submit" className="btn btn-primary">
+              {id ? "Update" : "Add"} Resident
+            </button>
+            <button type="reset" className="btn btn-warning">
+              Reset
+            </button>
+          </div>
         </div>
       </form>
     </div>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 function AddAssignment(props) {
   const location = useLocation();
   const navigate = useNavigate();
-  let [total, setTotal] = useState(0);
+  // let [total, setTotal] = useState(0);
   let [showUpdate, setShowUpdate] = useState(false);
   let [showAdd, setShowAdd] = useState(true);
   let [id, setId] = useState("");
@@ -29,15 +29,16 @@ function AddAssignment(props) {
         })
         .then(async (response) => {
           console.log(response);
-          setRecord(response.data[0]);
-          if (response.data[0].year === "firstyear") {
+          setRecord(response.data);
+
+          if (response.data.year === "firstyear") {
             document.getElementById("rdbFy").setAttribute("checked", "checked");
-          } else if (response.data[0].year === "secondyear") {
+          } else if (response.data.year === "secondyear") {
             document.getElementById("rdbSy").setAttribute("checked", "checked");
           } else {
             document.getElementById("rdbTy").setAttribute("checked", "checked");
           }
-          await response.data[0];
+          await response.data;
           await setShowUpdate(true);
           await setShowAdd(false);
           await setId(id);
@@ -61,9 +62,9 @@ function AddAssignment(props) {
   const handleChange = async (e) => {
     await setRecord({ ...record, [e.target.name]: e.target.value });
   };
-  const handleRdbClick = async (e) => {
-    e.target.setAttribute("checked", "checked");
-  };
+  // const handleRdbClick = async (e) => {
+  //   e.target.setAttribute("checked", "checked");
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -74,7 +75,7 @@ function AddAssignment(props) {
       formData
     );
     console.log(fileupload);
-    if (fileupload.data.code == 200) {
+    if (fileupload.data.code === 200) {
       console.log(fileName);
       let data = record;
       data.upload = fileName;
@@ -112,181 +113,182 @@ function AddAssignment(props) {
 
   return (
     <div className="container">
-      <div className="row bg-primary p-3">
-        <div className="col-7 text-center text-white">
+      <div className="row  border border-primary mt-3">
+        <div className="col-12 text-center">
           <h1 className="display-6">Accept Assignment Submission</h1>
         </div>
-        <div className="col-5">
-          <Link role="button" to="/" className="btn btn-success btn-lg">
-            Home
-          </Link>
-          <Link
-            role="button"
-            to="/AssignmentDetails"
-            className="btn btn-warning btn-lg"
+      </div>
+      <div className="row border border-primary mb-3">
+        <div className="col-12">
+          <form
+            encType="multipart/form-data"
+            className=" p-4 m-auto"
+            onSubmit={handleSubmit}
           >
-            View Submitted Assignments
-          </Link>
+            <div className="row mb-3">
+              <div className="col-lg-2">
+                <p>Student Name</p>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  name="studentname"
+                  onChange={handleChange}
+                  onBlur={handleChange}
+                  type="text"
+                  className="form-control"
+                  required
+                  value={record.studentname}
+                />
+              </div>
+              <div className="col-lg-4"></div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-lg-2">
+                <p>Course</p>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  name="course"
+                  onChange={handleChange}
+                  type="text"
+                  className="form-control"
+                  required
+                  value={record.course}
+                  list="courses"
+                  autoComplete="off"
+                />
+                <datalist id="courses">
+                  <option value="BCA" />
+                  <option value="BBA" />
+                  <option value="BCOM" />
+                  <option value="BSC" />
+                </datalist>
+              </div>
+              <div className="col-lg-4"></div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-lg-2">
+                <p>Year</p>
+              </div>
+              <div className="col-lg-5 d-flex">
+                <div className="form-check">
+                  <input
+                    onChange={handleChange}
+                    onBlur={handleChange}
+                    className="form-check-input"
+                    type="radio"
+                    name="year"
+                    value="firstyear"
+                    id="rdbFy"
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexRadioDefault1"
+                  >
+                    First Year
+                  </label>
+                </div>
+                <div className="form-check mx-3">
+                  <input
+                    onChange={handleChange}
+                    onBlur={handleChange}
+                    className="form-check-input"
+                    type="radio"
+                    name="year"
+                    value="secondyear"
+                    id="rdbSy"
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexRadioDefault1"
+                  >
+                    Second Year
+                  </label>
+                </div>
+                <div className="form-check mx-3">
+                  <input
+                    onChange={handleChange}
+                    onBlur={handleChange}
+                    className="form-check-input"
+                    type="radio"
+                    name="year"
+                    value="thirdyear"
+                    id="rdbTy"
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexRadioDefault1"
+                  >
+                    Third Year
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-lg-2">
+                <p>Date of Submission</p>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  onChange={handleChange}
+                  onBlur={handleChange}
+                  type="date"
+                  className="form-control"
+                  name="dateofsubmission"
+                  id="dateofsubmission"
+                  required
+                  value={record.dateofsubmission}
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-lg-2">
+                <p>Upload Assignment</p>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  className="form-control"
+                  type="file"
+                  name="upload"
+                  onChange={saveFile}
+                  id="assignmentUpload"
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-lg-2">
+                <p>Remark</p>
+              </div>
+              <div className="col-lg-7">
+                <textarea
+                  className="form-control"
+                  rows="5"
+                  name="remark"
+                  onChange={handleChange}
+                  onBlur={handleChange}
+                  value={record.remark}
+                ></textarea>
+              </div>
+            </div>
+
+            {showAdd ? (
+              <button type="submit" className="btn btn-primary">
+                Submit Assignment
+              </button>
+            ) : (
+              ""
+            )}
+
+            {showUpdate ? (
+              <button onClick={handleUpdate} className="btn btn-warning">
+                Update Submission
+              </button>
+            ) : (
+              ""
+            )}
+          </form>
         </div>
       </div>
-      <form
-        encType="multipart/form-data"
-        className="bg-info p-4 m-auto"
-        onSubmit={handleSubmit}
-      >
-        <div className="row mb-3">
-          <div className="col-lg-2">
-            <p>Student Name</p>
-          </div>
-          <div className="col-lg-5">
-            <input
-              name="studentname"
-              onChange={handleChange}
-              onBlur={handleChange}
-              type="text"
-              className="form-control"
-              required
-              value={record.studentname}
-            />
-          </div>
-          <div className="col-lg-4"></div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-lg-2">
-            <p>Course</p>
-          </div>
-          <div className="col-lg-5">
-            <input
-              name="course"
-              onChange={handleChange}
-              type="text"
-              className="form-control"
-              required
-              value={record.course}
-              list="courses"
-              autoComplete="off"
-            />
-            <datalist id="courses">
-              <option value="BCA" />
-              <option value="BBA" />
-              <option value="BCOM" />
-              <option value="BSC" />
-            </datalist>
-          </div>
-          <div className="col-lg-4"></div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-lg-2">
-            <p>Year</p>
-          </div>
-          <div className="col-lg-5 d-flex">
-            <div className="form-check">
-              <input
-                onChange={handleChange}
-                onBlur={handleChange}
-                className="form-check-input"
-                type="radio"
-                name="year"
-                value="firstyear"
-                id="rdbFy"
-              />
-              <label className="form-check-label" htmlFor="flexRadioDefault1">
-                First Year
-              </label>
-            </div>
-            <div className="form-check mx-3">
-              <input
-                onChange={handleChange}
-                onBlur={handleChange}
-                className="form-check-input"
-                type="radio"
-                name="year"
-                value="secondyear"
-                id="rdbSy"
-              />
-              <label className="form-check-label" htmlFor="flexRadioDefault1">
-                Second Year
-              </label>
-            </div>
-            <div className="form-check mx-3">
-              <input
-                onChange={handleChange}
-                onBlur={handleChange}
-                className="form-check-input"
-                type="radio"
-                name="year"
-                value="thirdyear"
-                id="rdbTy"
-              />
-              <label className="form-check-label" htmlFor="flexRadioDefault1">
-                Third Year
-              </label>
-            </div>
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-lg-2">
-            <p>Date of Submission</p>
-          </div>
-          <div className="col-lg-5">
-            <input
-              onChange={handleChange}
-              onBlur={handleChange}
-              type="date"
-              className="form-control"
-              name="dateofsubmission"
-              id="dateofsubmission"
-              required
-              value={record.dateofsubmission}
-            />
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-lg-2">
-            <p>Upload Assignment</p>
-          </div>
-          <div className="col-lg-7">
-            <input
-              className="form-control"
-              type="file"
-              name="upload"
-              onChange={saveFile}
-              id="assignmentUpload"
-            />
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-lg-2">
-            <p>Remark</p>
-          </div>
-          <div className="col-lg-7">
-            <textarea
-              className="form-control"
-              rows="5"
-              name="remark"
-              onChange={handleChange}
-              onBlur={handleChange}
-              value={record.remark}
-            ></textarea>
-          </div>
-        </div>
-
-        {showAdd ? (
-          <button type="submit" className="btn btn-primary">
-            Submit Assignment
-          </button>
-        ) : (
-          ""
-        )}
-
-        {showUpdate ? (
-          <button onClick={handleUpdate} className="btn btn-warning">
-            Update Submission
-          </button>
-        ) : (
-          ""
-        )}
-      </form>
     </div>
   );
 }

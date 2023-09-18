@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import axios from "axios";
+import 'font-awesome/css/font-awesome.min.css';
 
 function ResidentGridView() {
   const navigate = useNavigate();
@@ -85,28 +85,38 @@ function ResidentGridView() {
       sortable: true,
       cell: (row) => (row.isOwner ? "Yes" : "No"),
     },
+    // {
+    //   name: "Details",
+    //   cell: (row) => (
+        
+    
+    // )},
     {
       name: "Actions",
       cell: (row) => (
         <>
+       
+        <div className="btn-group">
         <button
         className="btn btn-success btn-sm"
         onClick={() => showReport(row._id)}
+        title = "View Details"
       >
-        View Report
+        <i className="fa fa-table"></i>
       </button>
-        <div className="btn-group">
           <Link
             to={`/edit-resident/${row._id}`}
             className="btn btn-primary btn-sm"
+            title = "Edit"
           >
-            Edit
+             <i className="fa fa-edit"></i>
           </Link>
           <button
             className="btn btn-danger btn-sm"
             onClick={() => handleDelete(row._id)}
+            title = "Delete"
           >
-            Delete
+             <i className="fa fa-trash"></i>
           </button>
         </div>
         </>

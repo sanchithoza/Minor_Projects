@@ -1,10 +1,12 @@
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function AssignmentDetails(props) {
   const navigate = useNavigate();
   let [records, setRecords] = useState("");
+  const [filteredRecords, setFilteredRecords] = useState([]);
+  
   const columns = [
     {
       name: "#",
@@ -58,6 +60,7 @@ function AssignmentDetails(props) {
     axios.get("http://localhost:7000/getStudentassignment").then((response) => {
       console.log(response);
       setRecords(response.data);
+      setFilteredRecords(response.data);
     });
   };
   let deleteStudentProfile = (id) => {
@@ -75,33 +78,41 @@ function AssignmentDetails(props) {
   let updateStudentProfile = (id) => {
     navigate(`/AddAssignment?id=${id}`);
   };
-  const data = records;
+  const handleFilter = (e) => {
+    const keyword = e.target.value.toLowerCase();
+    const filteredData = records.filter((record) => {
+      return (
+        record.studentname.toLowerCase().includes(keyword) ||
+        record.course.toLowerCase().includes(keyword) ||
+        record.year.toLowerCase().includes(keyword)
+      );
+    });
+    setFilteredRecords(filteredData);
+  };
+  const data = filteredRecords;
 
   return (
     <div className="container">
-      <div className="row bg-primary">
-        <div className="col-8 p-3">
-          <h3 className="text-center text-white display-6">
+      <div className="row border border-success">
+        <div className="col-12 p-3">
+          <h3 className="text-center display-6">
             Student Assignment Data
           </h3>
         </div>
-        <div className="col-4 p-3">
-          <Link role="button" to="/" className="btn btn-success btn-lg">
-            Home
-          </Link>
-          <Link
-            role="button"
-            to="/AddAssignment"
-            className="btn btn-warning btn-lg"
-          >
-            Accept Assignment
-          </Link>
-        </div>
+        
       </div>
-      <div className="row bg-info p-2">
+      <div className="row border border-success">
+        <div className="col-12 text-center p-2">
+        <input
+          type="text"
+          placeholder="Filter Records"
+          onChange={handleFilter}
+        />
+        </div>
         <div className="col-12">
+        
           <DataTable
-            className="border border-grey"
+            className=""
             columns={columns}
             data={data}
           />

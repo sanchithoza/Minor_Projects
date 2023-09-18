@@ -2,46 +2,57 @@ import { Link } from "react-router-dom";
 function Home(props) {
   return (
     <>
-      <div className="container-fluied bg-warning">
+      <div className="container mt-3">
         <div className="row">
-          <div className="col-12 text-center">
-            <h3>Welcome to</h3>
-            <h1>Student Assignment Portal</h1>
-            <hr />
-            <h6>
-              This Portal lets you maintain Students Assignment Submission data.
-            </h6>
+        <p className="lead text-center">
+              This Portal lets you maintain Students Assignment Submission
+              Records.
+            </p>
+          <div className="col-6">
+            <div className="card border-success">
+              <div className="card-header border-success">
+                <h5 className="card-title">Accept Assignments</h5>
+              </div>
+              <div className="card-body">
+                <p className="card-text">
+                  To Accept an Assignment from Student
+                  <br /> Click the Button Bellow
+                </p>
+              </div>
+              <div className="card-footer border-success">
+                <Link
+                  role="button"
+                  to="/AddAssignment"
+                  className="btn btn-success"
+                >
+                  Accept Assignment
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-6 text-center bg-primary p-3">
-            <h3 className="display-3">
-              To Accept an Assignment
-              <br /> From Student
-              <br /> Click the Button Bellow
-            </h3>
-            <Link
-              role="button"
-              to="/AddAssignment"
-              className="btn btn-warning btn-lg"
-            >
-              Accept Assignment
-            </Link>
-          </div>
-          <div className="col-6 text-center bg-success p-3">
-            <h3 className="display-3">
-              To View Assignments Submitted
-              <br /> By Student
+          <div className="col-6">
+            <div className="card border-primary">
+              <div className="card-header border-primary">
+                <h5 className="card-title">Check Assignments</h5>
+              </div>
+              <div className="card-body">
+                <p className="card-text">
+                To View Assignments Submitted By Student
               <br /> Click this Button
-            </h3>
-            <Link
+                </p>
+              </div>
+              <div className="card-footer border-primary">
+              <Link
               role="button"
               to="/AssignmentDetails"
-              className="btn btn-warning btn-lg"
+              className="btn btn-primary"
             >
-              View Submitted Assignments
+              Check Assignments
             </Link>
+              </div>
+            </div>
           </div>
+          
         </div>
       </div>
     </>

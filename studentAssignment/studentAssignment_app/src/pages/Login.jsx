@@ -14,21 +14,17 @@ function Login(props) {
     console.log(login);
     e.preventDefault();
     const response = await axios.post("http://localhost:7000/login", login);
-    console.log(response.data);
+  alert(response.data);
     navigate("/");
   };
   return (
     <div className="container">
       <div className="row">
-        <div className="col-8 bg-light">
-          <h1 className="display-1">
-            Login To <br /> OPD <br />
-            Transaction Management <br />
-            Tool
-          </h1>
+        <div className="col-3 bg-light">
+          
         </div>
-        <div className="col-4 p-4 border border-light">
-          <h3 className="bg-light p-5"> User Login</h3>
+        <div className="col-6 p-4 border border-light">
+          <h3 className="bg-light p-5">Login</h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Username</label>

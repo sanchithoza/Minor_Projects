@@ -50,7 +50,7 @@ function ResidentMaintenanceReport() {
       },
       {
         name: 'Year',
-        selector: 'year',
+        selector: (row)=> String(row.year),
         sortable: true,
       },
       {
@@ -71,8 +71,8 @@ function ResidentMaintenanceReport() {
         return (
           payment.date.toLowerCase().includes(keyword) ||
           payment.month.toLowerCase().includes(keyword) ||
-          payment.year.toLowerCase().includes(keyword) ||
-          payment.amount.toLowerCase().includes(keyword) ||
+          payment.year == keyword ||
+          payment.amount== keyword ||
           payment.status.toLowerCase().includes(keyword)
         );
       });
