@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 const port = 7000;
 
-mongoose.connect("mongodb://localhost:27017/studentjournaldb");
+mongoose.connect("mongodb://127.0.0.1:27017/StudentJournaldb");
 const User = mongoose.model("user", {
   name: String,
   email: String,
@@ -24,61 +24,69 @@ const User = mongoose.model("user", {
   username: String,
   password: String,
 });
-const Studentjournal = mongoose.model("tbl_student_journal", {
-  studentname: "",
-  year: "",
-  dateofsubmission: "",
-  upload: "",
-  remark: "",
-  course: "",
-  subject: "",
+const StudentJournal = mongoose.model("tbl_student_Journal", {
+  studentname: String,
+  year: String,
+  dateofsubmission: String,
+  upload: String,
+  remark: String,
+  course: String,
 });
 /*----------User Endoints-----------*/
 //API ENDPOINT to Get All Users
 app.get("/getUsers", async (req, res) => {
-  console.log("here");
-  let response = await User.find();
-  console.log(response);
-  res.send(response);
+  try {
+    console.log("here");
+    let response = await User.find();
+    // console.log(response);
+    res.send(response);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
 });
 //API ENDPOINT to Get user detail
-app.get("/getUser/:id", (req, res) => {
-  User.find(function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
+app.get("/getUser/:id", async (req, res) => {
+  try {
+    let response = await User.find({ _id: req.params.id });
     res.send(response);
-  });
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
 });
 //API ENDPOINT to Add New User
 app.post("/register", async (req, res) => {
-  let data = await req.body;
-  console.log(data);
-  const user = new User(data);
-  user.save(function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
+  try {
+    let data = await req.body;
+    // console.log(data);
+    const user = new User(data);
+    let response = await user.save();
     res.send(response);
-  });
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
 });
 //API ENDPOINT ro LOGIN user
 app.post("/login", async (req, res) => {
   try {
     let data = req.body;
-    console.log("data", data);
+    // console.log("data", data);
     let reply = await User.findOne(data).exec();
-    console.log("result", reply);
+    // console.log("result", reply);
     res.send(reply);
   } catch (error) {
     res.send(err);
   }
 });
-/*----------Studentjournal Endoints-----------*/
-app.post("/uploadjournal", async (req, res) => {
+/*----------StudentJournal Endoints-----------*/
+app.post("/uploadJournal", async (req, res) => {
   const newpath = __dirname + "/files/";
-  console.log(req.files.file);
+  // console.log(req.files.file);
   const file = req.files.file;
   const filename = file.name;
-  console.log(file.name);
+  // console.log(file.name);
   file.mv(`${newpath}${filename}`, (err) => {
     if (err) {
       res.status(500).send({ message: "File upload failed", code: 200 });
@@ -87,44 +95,43 @@ app.post("/uploadjournal", async (req, res) => {
     res.status(200).send({ message: "File Uploaded", code: 200 });
   });
 });
-//API ENDPOINT to Add New Studentjournal
-app.post("/AddStudentjournal", async (req, res) => {
-  let data = await req.body;
-  console.log(data);
-  const assignmemt = new Studentjournal(data);
-
-  assignmemt.save(function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
-    res.send(response);
-  });
-});
-//API ENDPOINT to Get All Studentjournal
-app.get("/getStudentjournal", async (req, res) => {
+//API ENDPOINT to Add New StudentJournal
+app.post("/AddStudentJournal", async (req, res) => {
   try {
-    let response = await Studentjournal.find().exec();
-
+    let data = await req.body;
+    // console.log(data);
+    const Journal = new StudentJournal(data);
+    const savedJournal = await Journal.save();
+    res.status(201).json(savedJournal);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+//API ENDPOINT to Get All StudentJournal
+app.get("/getStudentJournal", async (req, res) => {
+  try {
+    let response = await StudentJournal.find().exec();
     res.send(response);
   } catch (error) {
     console.log("error", error);
   }
 });
-//API ENDPOINT to Get filtered Studentjournal
-app.post("/getStudentjournal", (req, res) => {
-  let filter = req.body;
-  Studentjournal.find({ filter }, function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
+//API ENDPOINT to Get filtered StudentJournal
+app.post("/getStudentJournal", async (req, res) => {
+  try {
+    // console.log(req.body);
+    let response = await StudentJournal.findById(req.body._id);
     res.send(response);
-  });
+  } catch (error) {
+    console.log("error", error);
+  }
 });
 //Api ENDPOINT to update record
-app.patch("/updateStudentjournal/:id", async (req, res) => {
+app.patch("/updateStudentJournal/:id", async (req, res) => {
   try {
-    let id = req.params.id;
-    let data = req.body;
-    let response = await Studentjournal.findOneAndUpdate({ _id: id }, data);
-    console.log(response);
+    let id = await req.params.id;
+    let data = await req.body;
+    let response = await StudentJournal.findOneAndUpdate({ _id: id }, data);
     res.send(response);
   } catch (error) {
     console.log(error);
@@ -132,13 +139,15 @@ app.patch("/updateStudentjournal/:id", async (req, res) => {
   }
 });
 
-app.delete("/deleteStudentjournal/:id", async (req, res) => {
-  let id = req.params.id;
-  Studentjournal.findOneAndDelete({ id }, function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
+app.delete("/deleteStudentJournal/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+    let response = await StudentJournal.findOneAndDelete({ "_id":id });
     res.send(response);
-  });
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
 });
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

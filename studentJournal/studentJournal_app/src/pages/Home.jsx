@@ -2,46 +2,54 @@ import { Link } from "react-router-dom";
 function Home(props) {
   return (
     <>
-      <div className="container-fluied bg-primary text-white">
+      <div className="container mt-3">
         <div className="row">
-          <div className="col-12 text-center">
-            <h3>Welcome to</h3>
-            <h1>Student journal Portal</h1>
-            <hr />
-            <h6>
-              This Portal lets you maintain Students journal Submission data.
-            </h6>
+        
+          <div className="col-6">
+            <div className="card bg-success border-white text-white">
+              <div className="card-header border-white">
+                <h5 className="card-title">Accept Journals</h5>
+              </div>
+              <div className="card-body">
+                <p className="card-text">
+                  To Accept an Journal from Student
+                  <br /> Click the Button Bellow
+                </p>
+              </div>
+              <div className="card-footer border-white">
+                <Link
+                  role="button"
+                  to="/AddJournal"
+                  className="btn btn-dark"
+                >
+                  Accept Journal
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-6 text-center bg-warning p-3">
-            <h3 className="display-3">
-              To Accept an journal
-              <br /> From Student
-              <br /> Click the Button Bellow
-            </h3>
-            <Link
-              role="button"
-              to="/Addjournal"
-              className="btn btn-primary text-white btn-lg"
-            >
-              Accept journal
-            </Link>
-          </div>
-          <div className="col-6 text-center bg-success p-3">
-            <h3 className="display-3">
-              To View journals Submitted
-              <br /> By Student
+          <div className="col-6">
+            <div className="card bg-primary border-white text-white">
+              <div className="card-header border-white">
+                <h5 className="card-title">Check Journals</h5>
+              </div>
+              <div className="card-body">
+                <p className="card-text">
+                To View Journals Submitted By Student
               <br /> Click this Button
-            </h3>
-            <Link
+                </p>
+              </div>
+              <div className="card-footer border-white">
+              <Link
               role="button"
-              to="/Viewjournal"
-              className="btn btn-primary text-white btn-lg"
+              to="/JournalDetails"
+              className="btn btn-dark"
             >
-              View Submitted journals
+              Check Journals
             </Link>
+              </div>
+            </div>
           </div>
+          
         </div>
       </div>
     </>

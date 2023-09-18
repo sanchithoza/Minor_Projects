@@ -2,7 +2,7 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-function AssignmentDetails(props) {
+function JournalDetails(props) {
   const navigate = useNavigate();
   let [records, setRecords] = useState("");
   const [filteredRecords, setFilteredRecords] = useState([]);
@@ -34,30 +34,28 @@ function AssignmentDetails(props) {
     },
     {
       cell: (row) => (
+        <div className="btn-group">
         <button
           className="btn btn-danger btn-sm"
           onClick={() => deleteStudentProfile(row._id)}
         >
           Delete
         </button>
+         <button
+         className="btn btn-warning btn-sm"
+         onClick={() => updateStudentProfile(row._id)}
+       >
+         Update
+       </button>
+       </div>
       ),
-    },
-    {
-      cell: (row) => (
-        <button
-          className="btn btn-warning btn-sm"
-          onClick={() => updateStudentProfile(row._id)}
-        >
-          Update
-        </button>
-      ),
-    },
+    }
   ];
   useEffect(() => {
     loadData();
   }, []);
   let loadData = () => {
-    axios.get("http://localhost:7000/getStudentAssignment").then((response) => {
+    axios.get("http://localhost:7000/getStudentJournal").then((response) => {
       console.log(response);
       setRecords(response.data);
       setFilteredRecords(response.data);
@@ -68,7 +66,7 @@ function AssignmentDetails(props) {
     console.log(isConfirmDelete);
     if (isConfirmDelete) {
       axios
-        .delete(`http://localhost:7000/deleteStudentAssignment/${id}`)
+        .delete(`http://localhost:7000/deleteStudentJournal/${id}`)
         .then((response) => {
           loadData();
           console.log(response);
@@ -76,7 +74,7 @@ function AssignmentDetails(props) {
     }
   };
   let updateStudentProfile = (id) => {
-    navigate(`/AddAssignment?id=${id}`);
+    navigate(`/AddJournal?id=${id}`);
   };
   const handleFilter = (e) => {
     const keyword = e.target.value.toLowerCase();
@@ -92,11 +90,11 @@ function AssignmentDetails(props) {
   const data = filteredRecords;
 
   return (
-    <div className="container mt-2">
-      <div className="row border border-success">
+    <div className="container border border-white bg-primary text-white mt-2 pb-3">
+      <div className="row border-bottom border-white">
         <div className="col-12 p-3">
           <h3 className="text-center display-6">
-            Student Assignment Data
+            Student Journal Data
           </h3>
         </div>
         
@@ -112,14 +110,15 @@ function AssignmentDetails(props) {
         <div className="col-12">
         
           <DataTable
-            className="border border-grey"
+            className=""
             columns={columns}
             data={data}
             pagination
+            theme="dark"
           />
         </div>
       </div>
     </div>
   );
 }
-export default AssignmentDetails;
+export default JournalDetails;

@@ -24,7 +24,7 @@ function AddAssignment(props) {
     if (query) {
       let id = query.split("=")[1];
       axios
-        .post("http://localhost:7000/getStudentassignment", {
+        .post("http://localhost:7000/getStudentAssignment", {
           _id: id,
         })
         .then(async (response) => {
@@ -81,7 +81,7 @@ function AddAssignment(props) {
       data.upload = fileName;
 
       const response = await axios.post(
-        "http://localhost:7000/AddStudentassignment",
+        "http://localhost:7000/AddStudentAssignment",
         data
       );
       if (response.data._id) {
@@ -99,7 +99,7 @@ function AddAssignment(props) {
   const handleUpdate = async (e) => {
     e.preventDefault();
     axios
-      .patch(`http://localhost:7000/updateStudentassignment/${id}`, record)
+      .patch(`http://localhost:7000/updateStudentAssignment/${id}`, record)
       .then((response) => {
         console.log(response);
         alert("Record Updated Successfully.");

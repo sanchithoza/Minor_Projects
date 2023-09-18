@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 const port = 7000;
 
-mongoose.connect("mongodb://127.0.0.1:27017/studentassignmentdb");
+mongoose.connect("mongodb://127.0.0.1:27017/StudentAssignmentdb");
 const User = mongoose.model("user", {
   name: String,
   email: String,
@@ -24,7 +24,7 @@ const User = mongoose.model("user", {
   username: String,
   password: String,
 });
-const Studentassignment = mongoose.model("tbl_student_assignment", {
+const StudentAssignment = mongoose.model("tbl_student_assignment", {
   studentname: String,
   year: String,
   dateofsubmission: String,
@@ -38,7 +38,7 @@ app.get("/getUsers", async (req, res) => {
   try {
     console.log("here");
     let response = await User.find();
-    console.log(response);
+    // console.log(response);
     res.send(response);
   } catch (error) {
     console.log(error);
@@ -59,7 +59,7 @@ app.get("/getUser/:id", async (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     let data = await req.body;
-    console.log(data);
+    // console.log(data);
     const user = new User(data);
     let response = await user.save();
     res.send(response);
@@ -72,21 +72,21 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     let data = req.body;
-    console.log("data", data);
+    // console.log("data", data);
     let reply = await User.findOne(data).exec();
-    console.log("result", reply);
+    // console.log("result", reply);
     res.send(reply);
   } catch (error) {
     res.send(err);
   }
 });
-/*----------Studentassignment Endoints-----------*/
+/*----------StudentAssignment Endoints-----------*/
 app.post("/uploadAssignment", async (req, res) => {
   const newpath = __dirname + "/files/";
-  console.log(req.files.file);
+  // console.log(req.files.file);
   const file = req.files.file;
   const filename = file.name;
-  console.log(file.name);
+  // console.log(file.name);
   file.mv(`${newpath}${filename}`, (err) => {
     if (err) {
       res.status(500).send({ message: "File upload failed", code: 200 });
@@ -95,44 +95,43 @@ app.post("/uploadAssignment", async (req, res) => {
     res.status(200).send({ message: "File Uploaded", code: 200 });
   });
 });
-//API ENDPOINT to Add New Studentassignment
-app.post("/AddStudentassignment", async (req, res) => {
+//API ENDPOINT to Add New StudentAssignment
+app.post("/AddStudentAssignment", async (req, res) => {
   try {
     let data = await req.body;
-    console.log(data);
-    const assignment = new Studentassignment(data);
+    // console.log(data);
+    const assignment = new StudentAssignment(data);
     const savedAssignment = await assignment.save();
     res.status(201).json(savedAssignment);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
-//API ENDPOINT to Get All Studentassignment
-app.get("/getStudentassignment", async (req, res) => {
+//API ENDPOINT to Get All StudentAssignment
+app.get("/getStudentAssignment", async (req, res) => {
   try {
-    let response = await Studentassignment.find().exec();
+    let response = await StudentAssignment.find().exec();
     res.send(response);
   } catch (error) {
     console.log("error", error);
   }
 });
-//API ENDPOINT to Get filtered Studentassignment
-app.post("/getStudentassignment", async (req, res) => {
+//API ENDPOINT to Get filtered StudentAssignment
+app.post("/getStudentAssignment", async (req, res) => {
   try {
-    console.log(req.body);
-    let filter = await req.body;
-    let response = await Studentassignment.findById(req.body._id);
+    // console.log(req.body);
+    let response = await StudentAssignment.findById(req.body._id);
     res.send(response);
   } catch (error) {
     console.log("error", error);
   }
 });
 //Api ENDPOINT to update record
-app.patch("/updateStudentassignment/:id", async (req, res) => {
+app.patch("/updateStudentAssignment/:id", async (req, res) => {
   try {
     let id = await req.params.id;
     let data = await req.body;
-    let response = await Studentassignment.findOneAndUpdate({ _id: id }, data);
+    let response = await StudentAssignment.findOneAndUpdate({ _id: id }, data);
     res.send(response);
   } catch (error) {
     console.log(error);
@@ -140,10 +139,10 @@ app.patch("/updateStudentassignment/:id", async (req, res) => {
   }
 });
 
-app.delete("/deleteStudentassignment/:id", async (req, res) => {
+app.delete("/deleteStudentAssignment/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    let response = await Studentassignment.findOneAndDelete({ "_id":id });
+    let response = await StudentAssignment.findOneAndDelete({ "_id":id });
     res.send(response);
   } catch (error) {
     console.log(error);
