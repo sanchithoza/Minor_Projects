@@ -15,9 +15,9 @@ function ResidentFormComponent() {
 
   useEffect(() => {
     let endPoint = "";
-    if (localStorage.userSocietyId) {
-      setSocietyId(localStorage.userSocietyId);
-      endPoint = `/api/societies/${localStorage.userSocietyId}`;
+    if (sessionStorage.userSocietyId) {
+      setSocietyId(sessionStorage.userSocietyId);
+      endPoint = `/api/societies/${sessionStorage.userSocietyId}`;
     } else {
       endPoint = `/api/societies`;
     }

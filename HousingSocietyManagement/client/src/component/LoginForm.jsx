@@ -32,23 +32,24 @@ function LoginForm() {
       const { token } = response.data;
 
       // Store the JWT token in local storage or a secure cookie
-      localStorage.setItem("token", token);
+      sessionStorage.setItem("token", token);
       const decodedToken = jwt_decode(token);
       console.log(decodedToken);
-      localStorage.setItem("userRole", decodedToken.role);
-      localStorage.setItem("userId", decodedToken.userId);
+      sessionStorage.setItem("userRole", decodedToken.role);
+      sessionStorage.setItem("userId", decodedToken.userId);
       if (decodedToken.societyId) {
-        localStorage.setItem("userSocietyId", decodedToken.societyId);
+        sessionStorage.setItem("userSocietyId", decodedToken.societyId);
       }
       if (decodedToken.societyId) {
-        localStorage.setItem("userResidentId", decodedToken.residentId);
+        sessionStorage.setItem("userResidentId", decodedToken.residentId);
+        
       }
       login();
       if (isLoggedIn) {
         navigate("/");
       }
 
-      // const userData = localStorage.getItem('userDetails');
+      // const userData = sessionStorage.getItem('userDetails');
       // console.log(JSON.parse(userData));
       // Redirect or perform other actions upon successful login
       // You can use React Router to navigate to different pages

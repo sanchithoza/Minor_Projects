@@ -1,13 +1,13 @@
 import React from "react";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import LoginForm from "./LoginForm";
 
 function Dashboard() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
-  const userRole = localStorage.getItem("userRole")
-   let residentId = localStorage.getItem("userResidentId");
+  const userRole = sessionStorage.getItem("userRole")
+   let residentId = sessionStorage.getItem("userResidentId");
   const showReport = async (id)=>{
     navigate(`/resident-maintenance-report/${id}`);
   }

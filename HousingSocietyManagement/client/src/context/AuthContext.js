@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     // Perform logout logic
-    localStorage.clear();
+    sessionStorage.clear();
     setIsLoggedIn(false);
   };
 

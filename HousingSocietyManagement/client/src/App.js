@@ -22,9 +22,9 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Dashboard />} />
-              {localStorage.userRole ? (
-                localStorage.userRole === "society" ||
-                localStorage.userRole === "admin" ? (
+              {sessionStorage.userRole ? (
+                sessionStorage.userRole === "society" ||
+                sessionStorage.userRole === "admin" ? (
                   <>
                     <Route
                       path="add-resident"
@@ -46,8 +46,8 @@ export default function App() {
               ) : (
                 ""
               )}
-              {localStorage.userRole ? (
-                localStorage.userRole === "admin" ? (
+              {sessionStorage.userRole ? (
+                sessionStorage.userRole === "admin" ? (
                   <>
                     <Route
                       path="add-society"

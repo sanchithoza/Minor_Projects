@@ -72,6 +72,23 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//get Residents by society id
+router.get("/society/:societyid", async (req, res) => {
+  try {
+    const resident = await Resident.find({"societyId":req.params.societyid}).populate({
+      path: "societyId",
+      select: "name",
+    });;
+    if (resident) {
+      res.json(resident);
+    } else {
+      res.status(404).json({ message: "Resident not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Update a resident
 router.put("/:id", async (req, res) => {
   try {

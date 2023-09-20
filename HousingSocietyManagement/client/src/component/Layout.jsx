@@ -2,7 +2,7 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 export default function Layout() {
   const { isLoggedIn, logout, login } = useAuth();
-  if (localStorage.getItem("userId")) {
+  if (sessionStorage.getItem("userId")) {
     login();
   }
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ export default function Layout() {
                 ""
               )}
               {isLoggedIn ? (
-                localStorage.userRole === "admin" ? (
+                sessionStorage.userRole === "admin" ? (
                   <>
                     <li className="nav-item">
                       <Link to="/add-society" className="nav-link">
@@ -62,8 +62,8 @@ export default function Layout() {
                 ""
               )}
               {isLoggedIn ? (
-                localStorage.userRole === "society" ||
-                localStorage.userRole === "admin" ? (
+                sessionStorage.userRole === "society" ||
+                sessionStorage.userRole === "admin" ? (
                   <>
                     <li className="nav-item">
                       <Link to="/add-resident" className="nav-link">
@@ -112,7 +112,11 @@ export default function Layout() {
           </div>
           {isLoggedIn ? (
             <form class="d-flex">
-              <span>{localStorage.getItem("userRole")}</span>
+               <ul className="navbar-nav">
+               <li className="nav-item">
+              <span>{sessionStorage.getItem("userRole")}</span>
+              </li>
+              </ul>
               <button
                 class="btn btn-outline-danger"
                 type="button"

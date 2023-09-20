@@ -35,12 +35,12 @@ function MaintenanceTransactionForm() {
     return currentYear;
   }
   useEffect(() => {
-    if (localStorage.userSocietyId) {
-      initialFormData.societyId = localStorage.userSocietyId;
+    if (sessionStorage.userSocietyId) {
+      initialFormData.societyId = sessionStorage.userSocietyId;
       axios
         .get(
-          localStorage.userSocietyId
-            ? `/api/societies/${localStorage.userSocietyId}`
+          sessionStorage.userSocietyId
+            ? `/api/societies/${sessionStorage.userSocietyId}`
             : "/api/societies"
         )
         .then((response) => {
@@ -51,7 +51,7 @@ function MaintenanceTransactionForm() {
           console.error("Error fetching societies:", error);
         });
         axios
-        .get(`/api/residents/society/${localStorage.userSocietyId}`)
+        .get(`/api/residents/society/${sessionStorage.userSocietyId}`)
         .then((response) => {
           const fetchedResidents = response.data;
           setResidents(fetchedResidents);
