@@ -15,7 +15,6 @@ function ResidentGridView() {
   const fetchData = async () => {
     try {
       const societyId = sessionStorage.getItem("userSocietyId");
-     
       const response = await axios.get((societyId)?`api/residents/society/${societyId}`:"/api/residents");
       setData(response.data);
       setFilteredResidents(response.data);

@@ -1,9 +1,11 @@
+import "./Layout.css";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 export default function Layout() {
   const { isLoggedIn, logout, login } = useAuth();
   if (sessionStorage.getItem("userId")) {
     login();
+  
   }
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -82,6 +84,17 @@ export default function Layout() {
               ) : (
                 ""
               )}
+               {isLoggedIn ? (
+                sessionStorage.userRole === "society" ? (
+                  <Link to={`/society-maintenance-report/${sessionStorage.getItem("userSocietyId")}`} className="nav-link">
+                  Maintenance Report
+                </Link>
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  ""
+                )}
               {isLoggedIn ? (
                 <>
                   <li className="nav-item">
@@ -112,11 +125,9 @@ export default function Layout() {
           </div>
           {isLoggedIn ? (
             <form class="d-flex">
-               <ul className="navbar-nav">
-               <li className="nav-item">
-              <span>{sessionStorage.getItem("userRole")}</span>
-              </li>
-              </ul>
+             
+              <span className="username-padding">{sessionStorage.getItem("userRole")}</span>
+             
               <button
                 class="btn btn-outline-danger"
                 type="button"

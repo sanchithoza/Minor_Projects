@@ -11,6 +11,7 @@ import ResidentGridView from "./component/ResidentGridView";
 import MaintenanceTransactionForm from "./component/MaintenanceTransactionForm";
 import { AuthProvider } from "./context/AuthContext";
 import ResidentMaintenanceReport from "./component/ResidentMaintenanceReport";
+import SocietyMaintenanceReport from "./component/SocietyMaintenanceReport";
 export default function App() {
   return (
     <AuthProvider>
@@ -65,7 +66,18 @@ export default function App() {
               ) : (
                 ""
               )}
-
+               {sessionStorage.userRole ? (
+                sessionStorage.userRole === "society" ? (
+                  <Route
+                  path="society-maintenance-report/:id"
+                  element={<SocietyMaintenanceReport/>}
+                />
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  ""
+                )}
               <Route
                 path="add-maintenance"
                 element={<MaintenanceTransactionForm />}

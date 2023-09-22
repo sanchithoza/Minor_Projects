@@ -46,6 +46,7 @@ function LoginForm() {
       }
       login();
       if (isLoggedIn) {
+        window.location.reload();
         navigate("/");
       }
 

@@ -32,7 +32,10 @@ router.get("/resident/:residentId", async (req, res) => {
 router.get("/society/:societyId", async (req, res) => {
   try {
     const maintenanceTransactions = await Maintenance.find({
-      societyId: req.params.residentId,
+      societyId: req.params.societyId,
+    }).populate({
+      path: "residentId",
+      select: { name: 1, unitNumber: 1 },
     });
     res.json(maintenanceTransactions);
   } catch (error) {
@@ -76,6 +79,19 @@ router.delete("/:id", async (req, res) => {
         .json({ message: "Maintenance transaction not found" });
     }
     res.json({ message: "Maintenance transaction deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+//Aggragate data from db
+router.get("/society/totalCollection/:societyId", async (req, res) => {
+  try {
+    const totalCollection = Maintenance.aggregate([
+      { $match: { societyId: req.params.societyId } },
+      { $group: { _id: null, amount: { $sum: "$amount" } } },
+    ]);
+    console.log(totalCollection[0]);
+    res.json(totalCollection);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
