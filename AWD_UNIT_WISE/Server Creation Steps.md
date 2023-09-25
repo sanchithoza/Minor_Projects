@@ -1,4 +1,4 @@
-# Steps to create a node server that connects with mongodb and wor as backend for react app
+# Steps to create a node server that connects with mongodb and work as backend for react app
 
 1. Create a folder named "backend"
 
@@ -30,10 +30,7 @@ app.use(bodyParser.json()); // parse req from client into JSON
 app.use(cors()); // Enable CORS for all routes
 
 // MongoDB Connection -- Change mydatabase with Your DB name
-mongoose.connect('mongodb://127.0.0.1:27017/mydatabase', { 
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://127.0.0.1:27017/mydatabase');
 
 const db = mongoose.connection;
 
@@ -62,77 +59,60 @@ const Item = mongoose.model('Item', {
 // you have to repeat all this endpoints 
 // for each of your collections(tables)
 
-// Create an item
-app.post('/items', (req, res) => {
-  const { name, description } = req.body;
-  const newItem = new Item({ name, description });
-
-  newItem.save((err, item) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(201).json(item);
+//API ENDPOINT to Add New item
+app.post("/Additem", async (req, res) => {
+    try {
+      let data = await req.body;
+      const item = new item(data);
+      const result = item.save();
+      res.send(result);
+    } catch (error) {
+      res.send(error);
     }
   });
-});
-
-// Read all items
-app.get('/items', (req, res) => {
-  Item.find({}, (err, items) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(200).json(items);
+  //API ENDPOINT to Get All item
+  app.get("/getitem", async (req, res) => {
+    try {
+      let response = await item.find().exec();
+      res.send(response);
+    } catch (error) {
+      console.log("error", error);
     }
   });
-});
-
-// Read a single item by ID
-app.get('/items/:id', (req, res) => {
-  Item.findById(req.params.id, (err, item) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else if (!item) {
-      res.status(404).json({ error: 'Item not found' });
-    } else {
-      res.status(200).json(item);
+  //API ENDPOINT to Get filtered item
+  app.get("/getitem/:id", async (req, res) => {
+    try {
+      let id = req.params.id;
+      const result = await item.findById(id);
+      res.send(result);
+    } catch (error) {
+      res.send(error);
     }
   });
-});
-
-// Update an item by ID
-app.put('/items/:id', (req, res) => {
-  Item.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true },
-    (err, item) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else if (!item) {
-        res.status(404).json({ error: 'Item not found' });
-      } else {
-        res.status(200).json(item);
-      }
-    }
-  );
-});
-
-// Delete an item by ID
-app.delete('/items/:id', (req, res) => {
-  Item.findByIdAndRemove(req.params.id, (err, item) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else if (!item) {
-      res.status(404).json({ error: 'Item not found' });
-    } else {
-      res.status(204).send();
+  //Api ENDPOINT to update record
+  app.patch("/updateitem/:id", async (req, res) => {
+    try {
+      let id = req.params.id;
+      let data = req.body;
+      let response = await item.findByIdAndUpdate(id, data);
+      res.send(response);
+    } catch (error) {
+       res.send(error);
     }
   });
-});
-
+  
+  app.delete("/deleteitem/:id", async (req, res) => {
+    try {
+      let id = req.params.id;
+      const result = await item.findByIdAndRemove(id);
+      res.send(result);
+    } catch (error) {
+       res.send(error);
+    }
+  });
+  
 // Start the server
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
@@ -159,12 +139,8 @@ app.listen(port, () => {
    }
    ```
 
-
-
 9. after completeing it go to command window of vscode editor and execute `npm start` it will start your server connected with mongodb on given port number
 
 10. your server IP(localhost) and port number given by you in server.js file will be used in your react app for sending request to the server. 
     
         `eg. http://localhost:3000`
-
-
