@@ -7,8 +7,7 @@ function Viewproduct(props) {
   const navigate = useNavigate();
 
   let [records, setRecords] = useState("");
-  let [filteredRecords, setFilteredRecords] = useState("");
-  let [searchStr, setSearchStr] = useState("");
+  const [filteredRecords, setFilteredRecords] = useState([]);
   const columns = [
     {
       name: "#",
@@ -38,7 +37,7 @@ function Viewproduct(props) {
       cell: (row) => (
         <button
           className="btn btn-danger btn-sm"
-          //onClick={() => deleteProduct(row._id)}
+          onClick={() => deleteProduct(row._id)}
         >
           Delete
         </button>
@@ -48,7 +47,7 @@ function Viewproduct(props) {
       cell: (row) => (
         <button
           className="btn btn-warning btn-sm"
-          // onClick={() => updateProduct(row._id)}
+           onClick={() => updateProduct(row._id)}
         >
           Update
         </button>
@@ -63,26 +62,35 @@ function Viewproduct(props) {
     axios.get("http://localhost:7000/getproduct").then((response) => {
       console.log(response);
       setRecords(response.data);
+      setFilteredRecords(response.data);
     });
   };
-  let handleSearch = async (event) => {
-    setSearchStr(event.target.value.toLowerCase().trim());
-    setRecords(records);
-    setFilteredRecords(records);
-    let result = [];
-    await filteredRecords.filter((obj) => {
-      if (
-        obj.name.toLowerCase().includes(searchStr) ||
-        obj.company.toLowerCase().includes(searchStr) ||
-        obj.category.toLowerCase().includes(searchStr)
-      ) {
-        result.push(obj);
-      }
+  let handleSearch = async (e) => {
+    const keyword = e.target.value.toLowerCase();
+    const filteredData = records.filter((record) => {
+      return (
+        record.name.toLowerCase().includes(keyword) ||
+        record.company.toLowerCase().includes(keyword) ||
+        record.category.toLowerCase().includes(keyword)
+      )   
     });
-    console.log(result);
-    setRecords(result);
+    setFilteredRecords(filteredData);
+     };
+  let deleteProduct = (id) => {
+    let isConfirmDelete = window.confirm("Do you Want to Delete this Record ?");
+    console.log(isConfirmDelete);
+    if (isConfirmDelete) {
+      axios
+        .delete(`http://localhost:7000/deleteproduct/${id}`)
+        .then((response) => {
+          loadData();
+          console.log(response);
+        });
+    }
   };
-
+  let updateProduct = (id) => {
+     navigate(`/Addproduct?id=${id}`);
+  };
   return (
     <div className="container">
       <div className="row" style={{ backgroundColor: "#193F3D" }}>
@@ -95,19 +103,19 @@ function Viewproduct(props) {
       <div className="row p-3" style={{ backgroundColor: "#2F5250" }}>
         <div className="col-3"></div>
         <div className="col-6">
-          <h6 className="display-6 text-center text-white">
+          <h6 className="text-center text-white">
             Enter Search String Here
           </h6>
           <input
             type="text"
-            onKeyDown={handleSearch}
+            onChange={handleSearch}
             className="form-control"
           />
         </div>
       </div>
-      <div className="row" style={{ backgroundColor: "#a3b2b1" }}>
+      <div className="row alert alert-success">
         <div className="col-12">
-          <DataTable columns={columns} data={records} striped pagination />
+          <DataTable columns={columns} data={filteredRecords} striped pagination />
         </div>
       </div>
     </div>

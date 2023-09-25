@@ -24,26 +24,13 @@ function Addproduct(props) {
     if (query) {
       let id = query.split("=")[1];
       axios
-        .post("http://localhost:7000/getleaverequest", {
-          _id: id,
-        })
+        .get(`http://localhost:7000/getproduct/${id}`)
         .then(async (response) => {
           console.log(response);
-          setRecord(response.data[0]);
-          if (response.data[0].year === "firstyear") {
-            document.getElementById("rdbFy").setAttribute("checked", "checked");
-          } else if (response.data[0].year === "secondyear") {
-            document.getElementById("rdbSy").setAttribute("checked", "checked");
-          } else {
-            document.getElementById("rdbTy").setAttribute("checked", "checked");
-          }
-          await response.data[0];
-          await setShowUpdate(true);
-          await setShowAdd(false);
-          await setId(id);
-          document
-            .getElementById("feesUpload")
-            .setAttribute("disabled", "disabled");
+          setRecord(response.data);
+          setShowAdd(false);
+          setShowUpdate(true);
+          
         });
     } else {
       setRecord({
@@ -67,7 +54,8 @@ function Addproduct(props) {
     let data = record;
 
     const response = await axios.post("http://localhost:7000/Addproduct", data);
-    if (response.data._id) {
+    console.log();
+    if (response.status === 200) {
       alert("Record Added Successfully.");
       console.log(response.data);
       navigate(`/`);
@@ -78,12 +66,16 @@ function Addproduct(props) {
   };
   const handleUpdate = async (e) => {
     e.preventDefault();
-    axios
-      .patch(`http://localhost:7000/updateleaverequest/${id}`, record)
+    var query = window.location.search.substring(1);
+    let id = query.split("=")[1];
+     axios
+      .patch(`http://localhost:7000/updateproduct/${id}`, record)
       .then((response) => {
         console.log(response);
         alert("Record Updated Successfully.");
         navigate(`/Viewproduct`);
+      }).catch((error)=>{
+        console.log(error);
       });
   };
   const saveFile = async (e) => {
@@ -99,11 +91,10 @@ function Addproduct(props) {
         </div>
       </div>
       <div className="row">
-        <div className="col-md-12 p-0" style={{ border: "1px solid #192f3d" }}>
+        <div className="col-md-12 p-0 alert alert-success border border-success" >
           <form
             encType="multipart/form-data"
             className="p-4 m-auto"
-            style={{ backgroundColor: "#A3B2B1" }}
             onSubmit={handleSubmit}
           >
             <div className="row mb-3">

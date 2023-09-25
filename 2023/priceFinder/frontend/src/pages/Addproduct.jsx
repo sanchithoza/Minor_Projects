@@ -91,11 +91,10 @@ function Addproduct(props) {
         </div>
       </div>
       <div className="row">
-        <div className="col-md-12 p-0" style={{ border: "1px solid #192f3d" }}>
+        <div className="col-md-12 p-0 alert alert-success border border-success" >
           <form
             encType="multipart/form-data"
             className="p-4 m-auto"
-            style={{ backgroundColor: "#A3B2B1" }}
             onSubmit={handleSubmit}
           >
             <div className="row mb-3">

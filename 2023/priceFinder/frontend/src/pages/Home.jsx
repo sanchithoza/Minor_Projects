@@ -16,14 +16,14 @@ function Home(props) {
 
       <hr />
 
-      <div className="col-12 text-center">
+      <div className="col-12 text-center alert alert-success">
         <h6 className="display-6 text-center">
           This Web Application makes it easier for staff to provide cost of a
           product to a customer without distrbing the Store owner.
         </h6>
         <hr />
         <br />
-        <h1 className="display-1">{productCount}</h1>
+        <h1 className="display-1 border border-success">{productCount}</h1>
 
         <h1 className="display-6">
           Total Numbers Of Products Available with Us.

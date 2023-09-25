@@ -103,7 +103,7 @@ function Viewproduct(props) {
       <div className="row p-3" style={{ backgroundColor: "#2F5250" }}>
         <div className="col-3"></div>
         <div className="col-6">
-          <h6 className="display-6 text-center text-white">
+          <h6 className="text-center text-white">
             Enter Search String Here
           </h6>
           <input
@@ -113,7 +113,7 @@ function Viewproduct(props) {
           />
         </div>
       </div>
-      <div className="row" style={{ backgroundColor: "#a3b2b1" }}>
+      <div className="row alert alert-success">
         <div className="col-12">
           <DataTable columns={columns} data={filteredRecords} striped pagination />
         </div>

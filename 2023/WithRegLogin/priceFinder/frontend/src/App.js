@@ -2,21 +2,21 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Addfees from "./pages/Addfees";
-import Viewfees from "./pages/Viewfees";
+import Addproduct from "./pages/Addproduct";
+import Viewproduct from "./pages/Viewproduct";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout name="Fees Reconsilation" />}>
+        <Route path="/" element={<Layout name="Price Finder" />}>
           <Route index element={<Home />} />;
-          <Route path="Addfees" element={<Addfees />} />
-          <Route path="Viewfees" element={<Viewfees />} />
-          <Route path="Register" element={<Register />} />
-          <Route path="Login" element={<Login />} />
+          <Route path="Addproduct" element={<Addproduct />} />
+          <Route path="Viewproduct" element={<Viewproduct />} />
         </Route>
+        <Route path="Register" element={<Register />} />
+        <Route path="Login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

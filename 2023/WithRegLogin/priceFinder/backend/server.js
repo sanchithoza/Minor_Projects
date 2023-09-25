@@ -42,22 +42,23 @@ app.get("/getUsers", async (req, res) => {
 });
 //API ENDPOINT to Get user detail
 app.get("/getUser/:id", (req, res) => {
-  User.find(function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
-    res.send(response);
-  });
+  try {
+    const result = User.find();
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  }
 });
 //API ENDPOINT to Add New User
 app.post("/register", async (req, res) => {
-  let data = await req.body;
-  console.log(data);
-  const user = new User(data);
-  user.save(function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
-    res.send(response);
-  });
+  try {
+    let data = await req.body;
+    const user = new User(data);
+    const result = user.save();
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  }
 });
 //API ENDPOINT ro LOGIN user
 app.post("/login", async (req, res) => {
@@ -88,41 +89,42 @@ app.post("/uploadfees", async (req, res) => {
 });
 //API ENDPOINT to Add New product
 app.post("/Addproduct", async (req, res) => {
-  let data = await req.body;
-  console.log(data);
-  const product = new Product(data);
-
-  product.save(function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
-    res.send(response);
-  });
+  try {
+    let data = await req.body;
+    const product = new Product(data);
+    const result = product.save();
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
 });
 //API ENDPOINT to Get All product
 app.get("/getproduct", async (req, res) => {
   try {
     let response = await Product.find().exec();
-
     res.send(response);
   } catch (error) {
     console.log("error", error);
   }
 });
 //API ENDPOINT to Get filtered product
-app.post("/getproduct", (req, res) => {
-  let filter = req.body;
-  Product.find({ filter }, function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
-    res.send(response);
-  });
+app.get("/getproduct/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+    const result = await Product.findById(id);
+    console.log(result);
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  }
 });
 //Api ENDPOINT to update record
 app.patch("/updateproduct/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let data = req.body;
-    let response = await product.findOneAndUpdate({ _id: id }, data);
+    let response = await Product.findByIdAndUpdate(id, data);
     console.log(response);
     res.send(response);
   } catch (error) {
@@ -132,12 +134,15 @@ app.patch("/updateproduct/:id", async (req, res) => {
 });
 
 app.delete("/deleteproduct/:id", async (req, res) => {
-  let id = req.params.id;
-  product.findOneAndDelete({ id }, function (err, response) {
-    if (err) return console.error(err);
-    console.log(response);
-    res.send(response);
-  });
+  try {
+    let id = req.params.id;
+    const result = await Product.findByIdAndRemove(id);
+    console.log(result);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
 });
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

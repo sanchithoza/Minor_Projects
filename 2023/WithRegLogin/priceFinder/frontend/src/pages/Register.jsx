@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 function Register(props) {
   const [user, setUser] = useState({
     name: "",
@@ -25,19 +25,24 @@ function Register(props) {
     }
   };
   return (
-    <div className="container">
+    <div className="container alert alert-success">
       <form onSubmit={handleSubmit}>
         <div className="row">
-          <div className="col-6 bg-light">
+          <div className="col-6">
             <h1 className="display-3 pt-5">
               Only Registered
               <br /> User will <br />
               Be Able <br />
               to Access
             </h1>
+            <Link
+                to="/Login"
+                className="nav-link mt-2 border border-success text-center"
+                aria-current="page"
+              >Already Have an Account</Link>
           </div>
           <div className="col-6">
-            <h3 className="bg-light p-3">Register Now </h3>
+            <h3 className="bg-success text-white text-center p-3">Register Now </h3>
             <div className="mb-3">
               <label className="form-label">Email</label>
               <input

@@ -1,6 +1,26 @@
-import { Link, Outlet } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./Layout.css";
 function Layout(props) {
+  const navigate = useNavigate();
+  const [login, setLogin] = useState(false);
+  useEffect(() => {
+    setLogin(false)
+    console.log(sessionStorage.getItem("username"));
+    if (sessionStorage.getItem("username")) {
+      console.log("loggedin");
+      setLogin(true);
+    } else {
+      console.log("notlogged in");
+      setLogin(false);
+      navigate("./login");
+    }
+  }, []);
+  const handleLogout = (e)=>{
+    e.preventDefault();
+    sessionStorage.clear();
+    navigate("./login");
+  }
   return (
     <div className="container-fluid">
       <div className="row flex-nowrap">
@@ -37,6 +57,7 @@ function Layout(props) {
               </li>
             </ul>
             <hr />
+            <button className="btn btn-dark mb-2" onClick={handleLogout}>Logout</button>
           </div>
         </div>
         <div className="col py-3" style={{ backgroundColor: "#A3B2B1" }}>

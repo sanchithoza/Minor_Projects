@@ -14,9 +14,9 @@ function App() {
           <Route index element={<Home />} />;
           <Route path="Addproduct" element={<Addproduct />} />
           <Route path="Viewproduct" element={<Viewproduct />} />
-          <Route path="Register" element={<Register />} />
-          <Route path="Login" element={<Login />} />
         </Route>
+        <Route path="Register" element={<Register />} />
+        <Route path="Login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 function Login(props) {
   const [login, setLogin] = useState({
     username: "",
@@ -15,20 +15,31 @@ function Login(props) {
     e.preventDefault();
     const response = await axios.post("http://localhost:7000/login", login);
     console.log(response.data);
+    if(response.data){
+      sessionStorage.setItem("username",response.data.username)
     navigate("/");
+    }else{
+      alert("Invalid Credentials");
+    }
+
   };
   return (
     <div className="container">
-      <div className="row">
-        <div className="col-8 bg-light">
+      <div className="row alert alert-success p-3">
+        <div className="col-8 bg-success p-2">
           <h1 className="display-1">
-            Login To <br /> OPD <br />
-            Transaction Management <br />
-            Tool
+            Login To <br /> Price Finder  <br />
+            Web Application <br />
+            For Small Businesses
           </h1>
+          <Link
+                to="/Register"
+                className="nav-link mt-2 border border-black text-center text-white"
+                aria-current="page"
+              >New User Registration</Link>
         </div>
-        <div className="col-4 p-4 border border-light">
-          <h3 className="bg-light p-5"> User Login</h3>
+        <div className="col-4 p-4 border border-light alert alert-success p-3">
+          <h3 className="bg-success text-white text-center p-3"> User Login</h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Username</label>
@@ -51,7 +62,7 @@ function Login(props) {
                 name="password"
               />
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-success">
               Login
             </button>
           </form>
