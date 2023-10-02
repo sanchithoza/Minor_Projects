@@ -2,12 +2,12 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-export default function AddViewtiffinDetails() {
+export default function AddViewRoomDetails() {
   const navigate = useNavigate();
   const [record, setRecord] = useState([]);
   const [isUpdate,setIsUpdate] = useState(false);
   const [formData, setFormData] = useState({
-    tiffinNumber: "",
+    roomNumber: "",
     capacity: "",
     status: "Vacant",
   });
@@ -17,8 +17,8 @@ export default function AddViewtiffinDetails() {
       cell: (row, index) => index + 1, //RDT provides index by default
     },
     {
-      name: "tiffin Number",
-      selector: (row) => row.tiffinNumber,
+      name: "Room Number",
+      selector: (row) => row.roomNumber,
       sortable: true,
     },
     {
@@ -36,13 +36,13 @@ export default function AddViewtiffinDetails() {
         <div className="btn-group">
           <button
             className="btn btn-danger btn-sm"
-            onClick={() => deletetiffin(row._id)}
+            onClick={() => deleteRoom(row._id)}
           >
             Delete
           </button>
           <button
             className="btn btn-warning btn-sm"
-            onClick={() => updatetiffin(row._id)}
+            onClick={() => updateRoom(row._id)}
           >
             Update
           </button>
@@ -55,7 +55,7 @@ export default function AddViewtiffinDetails() {
     if (query) {
       setIsUpdate(true);
       let id = query.split("=")[1];
-      axios.get(`http://127.0.0.1:7000/tiffins/${id}`)
+      axios.get(`http://127.0.0.1:7000/rooms/${id}`)
       .then((response)=>{
         setFormData(response.data)
       })
@@ -63,7 +63,7 @@ export default function AddViewtiffinDetails() {
     loadData();
   }, []);
   const loadData = () => {
-    axios.get("http://127.0.0.1:7000/tiffins").then((response) => {
+    axios.get("http://127.0.0.1:7000/rooms").then((response) => {
       console.log(response);
       setRecord(response.data);
     });
@@ -75,7 +75,7 @@ export default function AddViewtiffinDetails() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(formData);
-    const response = await axios.post("http://localhost:7000/tiffins", formData);
+    const response = await axios.post("http://localhost:7000/rooms", formData);
     if (response.data._id) {
       alert("Record Added Successfully.");
       console.log(response.data);
@@ -85,20 +85,20 @@ export default function AddViewtiffinDetails() {
       console.log(response);
     }
   };
-  let deletetiffin = (id) => {
+  let deleteRoom = (id) => {
     let isConfirmDelete = window.confirm("Do you Want to Delete this Record ?");
     console.log(isConfirmDelete);
     if (isConfirmDelete) {
       axios
-        .delete(`http://localhost:7000/tiffins/${id}`)
+        .delete(`http://localhost:7000/rooms/${id}`)
         .then((response) => {
           loadData();
           console.log(response);
         });
     }
   };
-  let updatetiffin = (id) => {
-    navigate(`/AddViewtiffinDetails?id=${id}`);
+  let updateRoom = (id) => {
+    navigate(`/AddViewRoomDetails?id=${id}`);
   };
   let handleUpdate = (event)=>{
     event.preventDefault();
@@ -106,27 +106,27 @@ export default function AddViewtiffinDetails() {
     let id = query.split("=")[1];
 
     axios
-      .patch(`http://127.0.0.1:7000/tiffins/${id}`, formData)
+      .patch(`http://127.0.0.1:7000/rooms/${id}`, formData)
       .then((response) => {
         console.log(response);
         alert("Record Updated Successfully.");
-        navigate(`/AddViewtiffinDetails`);
+        navigate(`/AddViewRoomDetails`);
       });
   }
   return (
     <main>
      
 
-      <section class="tiffin-management">
-        <h2 className="bg-black text-white p-1">Add New tiffin</h2>
+      <section class="room-management">
+        <h2 className="bg-black text-white p-1">Add New Room</h2>
         <form onSubmit={handleSubmit}>
-          <label for="tiffinNumber">tiffin Number:</label>
+          <label for="roomNumber">Room Number:</label>
           <input
             type="text"
-            id="tiffinNumber"
-            name="tiffinNumber"
+            id="roomNumber"
+            name="roomNumber"
             onChange={handleChange}
-            value={formData.tiffinNumber}
+            value={formData.roomNumber}
             required
           />
 
@@ -154,11 +154,11 @@ export default function AddViewtiffinDetails() {
             <option value="Occupied">Occupied</option>
           </select>
 
-          {(isUpdate)?<button type="button" className="btn btn-dark" onClick={handleUpdate}>Update tiffin</button>:<button type="submit">Add tiffin</button>}
+          {(isUpdate)?<button type="button" className="btn btn-dark" onClick={handleUpdate}>Update Room</button>:<button type="submit">Add Room</button>}
         </form>
       </section>
-      <section class="tiffin-list">
-        <h2 className="bg-black text-white p-1">tiffin Details</h2>
+      <section class="room-list">
+        <h2 className="bg-black text-white p-1">Room Details</h2>
 
         <DataTable
             className=""

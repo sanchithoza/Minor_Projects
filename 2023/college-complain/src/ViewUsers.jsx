@@ -3,7 +3,7 @@ import DataTable from "react-data-table-component";
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
-export default function ViewBooking() {
+export default function ViewUsers() {
     // const navigate = useNavigate();
     const [record, setRecord] = useState([]);
     const columns = [
@@ -12,23 +12,29 @@ export default function ViewBooking() {
           cell: (row, index) => index + 1, //RDT provides index by default
         },
         {
-          name: "Room Number",
-          selector: (row) => row.room,
+          name: "Name",
+          selector: (row) => row.FirstName,
           sortable: true,
         },
         {
-          name: "Student Name",
-          selector: (row) => row.user,
+          name: "Email",
+          selector: (row) => row.Email,
           sortable: true,
         },
         {
-          name: "CheckIn Date",
-          selector: (row) => row.checkInDate,
+            name: "Contact",
+            selector: (row) => row.ContactNumber,
+            sortable: true,
+          },
+          
+        {
+          name: "Year",
+          selector: (row) => row.Year,
           sortable: true,
         },
         {
-            name: "CheckOut Date",
-            selector: (row) => row.checkInDate,
+            name: "Gender",
+            selector: (row) => row.Gender,
             sortable: true,
           },
         {
@@ -36,7 +42,7 @@ export default function ViewBooking() {
             <div className="btn-group">
               <button
                 className="btn btn-danger btn-sm"
-                onClick={() => deleteBooking(row._id)}
+                onClick={() => deleteComplain(row._id)}
               >
                 Delete
               </button>
@@ -49,17 +55,17 @@ export default function ViewBooking() {
         loadData();
       }, []);
       const loadData = () => {
-        axios.get("http://127.0.0.1:7000/bookings").then((response) => {
+        axios.get("http://127.0.0.1:5000/users").then((response) => {
           console.log(response);
           setRecord(response.data);
         });
       };
-      let deleteBooking = (id) => {
+      let deleteComplain = (id) => {
         let isConfirmDelete = window.confirm("Do you Want to Delete this Record ?");
         console.log(isConfirmDelete);
         if (isConfirmDelete) {
           axios
-            .delete(`http://localhost:7000/bookings/${id}`)
+            .delete(`http://localhost:5000/_complain/${id}`)
             .then((response) => {
               loadData();
               console.log(response);
@@ -67,8 +73,9 @@ export default function ViewBooking() {
         }
       };
   return (
-    <section class="booking-list bg-white m-5">
-            <h2 className='bg-black text-white p-1'>Booking List</h2>
+    <div className='pt-5'>
+    <section className="booking-list p-3 alert bg-warning">
+            <h2 className='bg-warning text-white p-1'>All Users</h2>
             <DataTable
             className=""
             columns={columns}
@@ -77,5 +84,6 @@ export default function ViewBooking() {
             theme=""
           />
         </section>
+        </div>
   )
 }

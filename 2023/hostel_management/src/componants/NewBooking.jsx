@@ -4,21 +4,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
 export default function NewBooking() {
   const navigate = useNavigate();
-  const [tiffins,settiffins] = useState([])
+  const [rooms,setRooms] = useState([])
   const [formData,setFormData] = useState({
     user: sessionStorage.getItem("name"),
-    tiffin: "",
+    room: "",
     checkInDate: "",
     checkOutDate: ""
   })
   useEffect(() => {     
-    loadtiffins();
+    loadRooms();
   }, []);
-  const loadtiffins = () => { 
-    axios.get(`http://127.0.0.1:7000/vacanttiffins`)
+  const loadRooms = () => { 
+    axios.get(`http://127.0.0.1:7000/vacantrooms`)
     .then((response)=>{
       console.log(response);
-      settiffins(response.data)
+      setRooms(response.data)
     })
   }
   const handleChange = async (e) => {
@@ -45,12 +45,12 @@ export default function NewBooking() {
         <label for="studentName">Student Name:</label>
         <input type="text" id="studentName" name="studentName" onChange={handleChange} value={formData.user} readonly/>
 
-        <label for="tiffinNumber">tiffin Number:</label>
-        {/* <input type="text" id="tiffinNumber" name="tiffinNumber" onChange={handleChange} value={formData.name} required/> */}
-        <select id="tiffin" name="tiffin"  onChange={handleChange} >
+        <label for="roomNumber">Room Number:</label>
+        {/* <input type="text" id="roomNumber" name="roomNumber" onChange={handleChange} value={formData.name} required/> */}
+        <select id="room" name="room"  onChange={handleChange} >
             <option key= "1"></option>
-            {tiffins.map((tiffin)=>{
-              return <option key={tiffin.tiffinNumber}>{tiffin.tiffinNumber}</option>
+            {rooms.map((room)=>{
+              return <option key={room.roomNumber}>{room.roomNumber}</option>
             })}
         </select>
 

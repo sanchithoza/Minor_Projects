@@ -23,10 +23,10 @@ export default function Header() {
             </li>
             {(sessionStorage.getItem("userrole") === "admin")?<><li>
               <Link
-                to="/AddViewtiffinDetails"
+                to="/AddViewRoomDetails"
                 aria-current="page"
               >
-                tiffin Details
+                Room Details
               </Link>
             </li>
             <li>

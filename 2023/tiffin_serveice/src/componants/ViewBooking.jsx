@@ -67,7 +67,7 @@ export default function ViewBooking() {
         }
       };
   return (
-    <section class="booking-list bg-white m-5">
+    <section className="booking-list bg-white m-5">
             <h2 className='bg-black text-white p-1'>Order Details</h2>
             <DataTable
             className=""

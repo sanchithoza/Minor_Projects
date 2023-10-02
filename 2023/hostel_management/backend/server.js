@@ -23,14 +23,14 @@ const User = mongoose.model("tbl_user_master", {
   username: String,
   password: String,
 });
-const tiffinMaster = mongoose.model("tbl_tiffin_master", {
-  tiffinNumber: String,
+const RoomMaster = mongoose.model("tbl_room_master", {
+  roomNumber: String,
   capacity: String,
   status: String
 });
 const BookingMaster  = mongoose.model("tbl_booking_master",{
   user: String,
-  tiffin: String,
+  room: String,
   checkInDate: String,
   checkOutDate: String
 })
@@ -82,81 +82,81 @@ app.post("/login", async (req, res) => {
     res.send(error);
   }
 });
-// Create a new tiffin
-app.post('/tiffins', async (req, res) => {
+// Create a new room
+app.post('/rooms', async (req, res) => {
   try {
-    const tiffin = new tiffinMaster(req.body);
-    await tiffin.save();
-    res.status(201).json(tiffin);
+    const room = new RoomMaster(req.body);
+    await room.save();
+    res.status(201).json(room);
   } catch (error) {
-    res.status(400).json({ error: 'Could not create tiffin' });
+    res.status(400).json({ error: 'Could not create room' });
   }
 });
 
-// Read all tiffins
-app.get('/tiffins', async (req, res) => {
+// Read all rooms
+app.get('/rooms', async (req, res) => {
   try {
-    const tiffins = await tiffinMaster.find();
-    res.status(200).json(tiffins);
+    const rooms = await RoomMaster.find();
+    res.status(200).json(rooms);
   } catch (error) {
-    res.status(400).json({ error: 'Could not fetch tiffins' });
+    res.status(400).json({ error: 'Could not fetch rooms' });
   }
 });
 
-// Read all tiffins
-app.get('/vacanttiffins', async (req, res) => {
+// Read all rooms
+app.get('/vacantrooms', async (req, res) => {
   try {
-    const tiffins = await tiffinMaster.find({"status":"Vacant"});
-    console.log(tiffins);
-    res.status(200).json(tiffins);
+    const rooms = await RoomMaster.find({"status":"Vacant"});
+    console.log(rooms);
+    res.status(200).json(rooms);
   } catch (error) {
     console.log(error);
-    res.status(400).json({ error: 'Could not fetch tiffins' });
+    res.status(400).json({ error: 'Could not fetch rooms' });
   }
 });
 
-// Read a single tiffin by ID
-app.get('/tiffins/:id', async (req, res) => {
+// Read a single room by ID
+app.get('/rooms/:id', async (req, res) => {
   try {
-    const tiffin = await tiffinMaster.findById(req.params.id);
-    if (!tiffin) {
-      return res.status(404).json({ error: 'tiffin not found' });
+    const room = await RoomMaster.findById(req.params.id);
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
     }
-    res.status(200).json(tiffin);
+    res.status(200).json(room);
   } catch (error) {
-    res.status(400).json({ error: 'Could not fetch tiffin' });
+    res.status(400).json({ error: 'Could not fetch room' });
   }
 });
 
-// Update a tiffin by ID
-app.patch('/tiffins/:id', async (req, res) => {
+// Update a room by ID
+app.patch('/rooms/:id', async (req, res) => {
   try {
     console.log(req.body,req.params.id);
-    const tiffin = await tiffinMaster.findByIdAndUpdate(
+    const room = await RoomMaster.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true }
     );
-    if (!tiffin) {
-      return res.status(404).json({ error: 'tiffin not found' });
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
     }
-    res.status(200).json(tiffin);
+    res.status(200).json(room);
   } catch (error) {
     console.log(error);
-    res.status(400).json({ error: 'Could not update tiffin' });
+    res.status(400).json({ error: 'Could not update room' });
   }
 });
 
-// Delete a tiffin by ID
-app.delete('/tiffins/:id', async (req, res) => {
+// Delete a room by ID
+app.delete('/rooms/:id', async (req, res) => {
   try {
-    const tiffin = await tiffinMaster.findByIdAndRemove(req.params.id);
-    if (!tiffin) {
-      return res.status(404).json({ error: 'tiffin not found' });
+    const room = await RoomMaster.findByIdAndRemove(req.params.id);
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
     }
     res.status(204).json();
   } catch (error) {
-    res.status(400).json({ error: 'Could not delete tiffin' });
+    res.status(400).json({ error: 'Could not delete room' });
   }
 });
 
