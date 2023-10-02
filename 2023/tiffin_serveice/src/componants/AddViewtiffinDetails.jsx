@@ -7,9 +7,9 @@ export default function AddViewtiffinDetails() {
   const [record, setRecord] = useState([]);
   const [isUpdate,setIsUpdate] = useState(false);
   const [formData, setFormData] = useState({
-    tiffinNumber: "",
-    capacity: "",
-    status: "Vacant",
+    tiffinType: "",
+    price: "",
+    details: "",
   });
   const columns = [
     {
@@ -17,18 +17,18 @@ export default function AddViewtiffinDetails() {
       cell: (row, index) => index + 1, //RDT provides index by default
     },
     {
-      name: "tiffin Number",
-      selector: (row) => row.tiffinNumber,
+      name: "Tiffin Type",
+      selector: (row) => row.tiffinType,
       sortable: true,
     },
     {
-      name: "Capacity",
-      selector: (row) => row.capacity,
+      name: "price",
+      selector: (row) => row.price,
       sortable: true,
     },
     {
-      name: "Status",
-      selector: (row) => row.status,
+      name: "details",
+      selector: (row) => row.details,
       sortable: true,
     },
     {
@@ -57,6 +57,7 @@ export default function AddViewtiffinDetails() {
       let id = query.split("=")[1];
       axios.get(`http://127.0.0.1:7000/tiffins/${id}`)
       .then((response)=>{
+        console.log(response.data);
         setFormData(response.data)
       })
     }
@@ -117,43 +118,35 @@ export default function AddViewtiffinDetails() {
     <main>
      
 
-      <section class="tiffin-management">
-        <h2 className="bg-black text-white p-1">Add New tiffin</h2>
+      <section class="tiffin-management p-2">
+        <h2 className="bg-black text-white p-1">Add New Tiffin Type</h2>
         <form onSubmit={handleSubmit}>
-          <label for="tiffinNumber">tiffin Number:</label>
+          <label for="tiffinType">Tiffin Type:</label>
           <input
             type="text"
-            id="tiffinNumber"
-            name="tiffinNumber"
+            id="tiffinType"
+            name="tiffinType"
             onChange={handleChange}
-            value={formData.tiffinNumber}
+            value={formData.tiffinType}
             required
           />
 
-          <label for="capacity">Capacity:</label>
+          <label for="price">Price:</label>
           <input
             type="number"
             min={1}
-            id="capacity"
-            name="capacity"
+            id="price"
+            name="price"
             onChange={handleChange}
-            value={formData.capacity}
+            value={formData.price}
             required
           />
 
-          <label name for="status">
-            Status:
+          <label name for="Tiffin Details">
+            Details:
           </label>
-          <select
-            id="status"
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-          >
-            <option value="Vacant">Vacant</option>
-            <option value="Occupied">Occupied</option>
-          </select>
-
+          <textarea id="details" name="details" value={formData.details} onChange={handleChange}></textarea>
+          <br/>
           {(isUpdate)?<button type="button" className="btn btn-dark" onClick={handleUpdate}>Update tiffin</button>:<button type="submit">Add tiffin</button>}
         </form>
       </section>

@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 const port = 7000;
 
-mongoose.connect("mongodb://127.0.0.1:27017/HostelManagementDB");
+mongoose.connect("mongodb://127.0.0.1:27017/tiffinManagementDB");
 const User = mongoose.model("tbl_user_master", {
   name: String,
   email: String,
@@ -24,15 +24,15 @@ const User = mongoose.model("tbl_user_master", {
   password: String,
 });
 const tiffinMaster = mongoose.model("tbl_tiffin_master", {
-  tiffinNumber: String,
-  capacity: String,
-  status: String
+  tiffinType: String,
+  price: String,
+  details: String
 });
 const BookingMaster  = mongoose.model("tbl_booking_master",{
   user: String,
   tiffin: String,
-  checkInDate: String,
-  checkOutDate: String
+  qty: String,
+  location: String
 })
 /*----------User Endoints-----------*/
 //API ENDPOINT to Get All Users
@@ -85,6 +85,7 @@ app.post("/login", async (req, res) => {
 // Create a new tiffin
 app.post('/tiffins', async (req, res) => {
   try {
+    console.log(req.body);
     const tiffin = new tiffinMaster(req.body);
     await tiffin.save();
     res.status(201).json(tiffin);

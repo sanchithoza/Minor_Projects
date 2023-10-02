@@ -4,21 +4,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
 export default function NewBooking() {
   const navigate = useNavigate();
-  const [tiffins,settiffins] = useState([])
+  const [tiffins,setTiffins] = useState([])
   const [formData,setFormData] = useState({
     user: sessionStorage.getItem("name"),
     tiffin: "",
-    checkInDate: "",
-    checkOutDate: ""
+    qty: "",
+    location: ""
   })
   useEffect(() => {     
-    loadtiffins();
+    loadData();
   }, []);
-  const loadtiffins = () => { 
-    axios.get(`http://127.0.0.1:7000/vacanttiffins`)
+  const loadData = () => { 
+    axios.get(`http://127.0.0.1:7000/tiffins`)
     .then((response)=>{
       console.log(response);
-      settiffins(response.data)
+      setTiffins(response.data)
     })
   }
   const handleChange = async (e) => {
@@ -40,26 +40,27 @@ export default function NewBooking() {
   };
   return (
     <section class="booking-management bg-white m-5 p-2">
-    <h2 className='bg-black text-white p-1'>New Booking</h2>
+    <h2 className='bg-black text-white p-1'>New Order</h2>
     <form onSubmit={handleSubmit}>
-        <label for="studentName">Student Name:</label>
+        <label for="studentName">Customer Name:</label>
         <input type="text" id="studentName" name="studentName" onChange={handleChange} value={formData.user} readonly/>
 
-        <label for="tiffinNumber">tiffin Number:</label>
-        {/* <input type="text" id="tiffinNumber" name="tiffinNumber" onChange={handleChange} value={formData.name} required/> */}
+        <label for="tiffinType">Tiffin Type:</label>
+        {/* <input type="text" id="tiffinType" name="tiffinType" onChange={handleChange} value={formData.name} required/> */}
         <select id="tiffin" name="tiffin"  onChange={handleChange} >
             <option key= "1"></option>
             {tiffins.map((tiffin)=>{
-              return <option key={tiffin.tiffinNumber}>{tiffin.tiffinNumber}</option>
+              return <option key={tiffin.tiffinType}>{tiffin.tiffinType}</option>
             })}
         </select>
 
-        <label for="checkInDate">Check-in Date:</label>
-        <input type="date" id="checkInDate" name="checkInDate" onChange={handleChange} value={formData.name} required/>
+        <label for="qty">Qty:</label>
+        <input type="number" id="qty" name="qty" onChange={handleChange} value={formData.qty} required/>
 
-        <label for="checkOutDate">Check-out Date:</label>
-        <input type="date" id="checkOutDate" name="checkOutDate" onChange={handleChange} value={formData.name} required/>
-
+        <label for="location">Address:</label>
+        <textarea type="date" id="location" name="location" onChange={handleChange} value={formData.location} required/>
+            <br/>
+            <br/>
         <button type="submit">Add Booking</button>
     </form>
 </section>

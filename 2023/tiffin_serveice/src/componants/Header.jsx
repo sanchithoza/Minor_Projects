@@ -10,7 +10,7 @@ export default function Header() {
   return (
     <>
       <header>
-        <h1>Hostel Management System</h1>
+        <h1>Online Tiffin Service</h1>
         <nav>
           <ul>
             <li>
@@ -34,7 +34,7 @@ export default function Header() {
               to="/ViewBooking"
               aria-current="page"
             >
-              Booking Details
+              Order Details
             </Link>
           </li></>:""}
             {(sessionStorage.getItem("username"))?(<><li>
@@ -42,7 +42,7 @@ export default function Header() {
                 to="/NewBooking"
                 aria-current="page"
               >
-                Book Now
+                Order Now
               </Link>
             </li>
             

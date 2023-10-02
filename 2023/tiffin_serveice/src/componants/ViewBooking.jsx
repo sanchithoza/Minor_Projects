@@ -17,18 +17,18 @@ export default function ViewBooking() {
           sortable: true,
         },
         {
-          name: "Student Name",
+          name: "Customer Name",
           selector: (row) => row.user,
           sortable: true,
         },
         {
-          name: "CheckIn Date",
-          selector: (row) => row.checkInDate,
+          name: "Qty",
+          selector: (row) => row.qty,
           sortable: true,
         },
         {
-            name: "CheckOut Date",
-            selector: (row) => row.checkInDate,
+            name: "Address",
+            selector: (row) => row.location,
             sortable: true,
           },
         {
@@ -68,7 +68,7 @@ export default function ViewBooking() {
       };
   return (
     <section class="booking-list bg-white m-5">
-            <h2 className='bg-black text-white p-1'>Booking List</h2>
+            <h2 className='bg-black text-white p-1'>Order Details</h2>
             <DataTable
             className=""
             columns={columns}
