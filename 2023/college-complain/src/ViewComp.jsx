@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import DataTable from "react-data-table-component";
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 export default function ViewComp() {
+  const navigate = useNavigate();
     // const navigate = useNavigate();
     const [record, setRecord] = useState([]);
     const columns = [
@@ -41,6 +42,12 @@ export default function ViewComp() {
               >
                 Delete
               </button>
+              <button
+         className="btn btn-warning btn-sm"
+         onClick={() => updateComplain(row._id)}
+       >
+         Update
+       </button>
             </div>
           ),
         },
@@ -54,6 +61,9 @@ export default function ViewComp() {
           console.log(response);
           setRecord(response.data);
         });
+      };
+      let updateComplain = (id) => {
+        navigate(`/CompForm?id=${id}`);
       };
       let deleteComplain = (id) => {
         let isConfirmDelete = window.confirm("Do you Want to Delete this Record ?");

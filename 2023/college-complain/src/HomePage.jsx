@@ -23,8 +23,8 @@ function HomePage() {
             </p>
 
             {/* <a href="./LoginForm" className="btn-get-started"><Link to="/LoginForm">Student</Link></a> */}
-            <Link to={'/LoginForm'} className="btn-get-started">Student</Link>
-            <Link to={'/P_Login'} className="btn-get-started">Principal</Link>
+            <Link to={'/LoginForm'} className="btn-get-started">Get started</Link>
+            {/* <Link to={'/P_Login'} className="btn-get-started">Principal</Link> */}
             {/* <a href="#about" className="btn-get-started">Principal</a> */}
           </div>
         </div>

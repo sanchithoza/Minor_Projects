@@ -65,7 +65,7 @@ export default function ViewUsers() {
         console.log(isConfirmDelete);
         if (isConfirmDelete) {
           axios
-            .delete(`http://localhost:5000/_complain/${id}`)
+            .delete(`http://localhost:5000/users/${id}`)
             .then((response) => {
               loadData();
               console.log(response);

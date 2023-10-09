@@ -53,15 +53,14 @@ function Navbar() {
           ""
         )}
 
-        {user === "admin" ? (
-          <>
-          <Link
+        <Link
             to="/ViewComp"
             className="nav-link text-black "
             aria-current="page"
           >
             ViewComp
           </Link>
+          {user === "admin" ? (
           <Link
           to="/ViewUsers"
           className="nav-link text-black "
@@ -69,7 +68,7 @@ function Navbar() {
         >
           ViewUsers
         </Link>
-        </>
+        
         ) : (
           ""
         )}

@@ -64,7 +64,18 @@ app.get("/users", async(req,res)=>{
         res.send(error);
     }
 })
-
+app.delete('/users/:id', async (req, res) => {
+    try {
+      const user = await student_reg.findByIdAndRemove(req.params.id);
+      if (!user) {
+        return res.status(404).json({ error: 'not found' });
+      }
+      res.status(204).json();
+    } catch (error) {
+        console.log(error);
+      res.status(400).json({ error: 'Could not delete' });
+    }
+  });
 //API ENDPOINT ro Complaint user
 const student_complain = mongoose.model('student_complain', {
 
@@ -113,7 +124,54 @@ app.delete('/_complain/:id', async (req, res) => {
       res.status(400).json({ error: 'Could not delete' });
     }
   });
+  app.get('/_complain/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const complain = await student_complain.findById(id);
+      console.log(complain);
+      if (!complain) {
+        return res.status(404).json({ error: 'Complain not found' });
+      }
+  
+      res.status(200).json(complain);
+    } catch (error) {
+      res.status(400).json({ error: 'Could not fetch complain' });
+    }
+  });
 
+  app.put('/_complain/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { FirstName, LastName, Course, Year, Address, Email, Phone, Complain } = req.body;
+        
+      console.log(id,req.body);
+      
+      const updatedComplain = await student_complain.findByIdAndUpdate(
+        id,
+        {
+          FirstName,
+          LastName,
+          Course,
+          Year,
+          Address,
+          Email,
+          Phone,
+          Complain,
+        },
+        { new: true }
+      );
+      if (!updatedComplain) {
+        return res.status(404).json({ error: 'Complain not found' });
+      }
+  
+      res.status(200).json(updatedComplain);
+    } catch (error) {
+        console.log(error);
+      res.status(400).json({ error: 'Could not update complain' });
+    }
+  });
+  
 //API ENDPOINT ro ContactUs user
 const student_contactUs = mongoose.model('student_contactUs', {
 
